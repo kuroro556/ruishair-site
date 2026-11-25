@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us - Ruis Hair</title>
+  <meta name="description" content="Learn about Ruis Hair Products Co., Ltd — a trusted virgin Remy hair extension manufacturer since 2005 in Shandong, China.">
+  <link rel="canonical" href="https://ruishairfactory.com/about.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About Us - Ruis Hair">
+  <meta property="og:description" content="Trusted virgin Remy hair extension manufacturer since 2005 in Shandong, China.">
+  <meta property="og:url" content="https://ruishairfactory.com/about.html">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="about">
+
+  <div class="page-hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Home</a><span>/</span><span id="aboutCrumb">About Us</span></div>
+    <h1 id="aboutTitle">About Us</h1>
+    <p class="muted" id="aboutSubtitle">Your trusted partner for premium Remy hair extensions since 2005.</p>
+  </div></div>
+
+  <section class="section"><div class="wrap about-split">
+    <div class="about-img reveal"><img src="assets/img/factory.jpg" id="aboutImg" alt="Ruis Hair factory building"><div class="exp"><b id="aboutFounded">2005</b><small>FOUNDED</small></div></div>
+    <div class="about-copy reveal">
+      <span class="eyebrow" id="aboutEyebrow">Who We Are</span>
+      <h2 class="h2" id="aboutHeading">Ruis Hair Products Co., Ltd</h2>
+      <p id="aboutP1">Ruis Hair Products Co., Ltd was founded in 2005, and our factory is located in Shandong Province, China. We are specialized in providing 100% cuticle-aligned Remy hair extensions to salons and distributors all over the world, and they are all satisfied with our quality.</p>
+      <p id="aboutP2">We have mature and professional production lines, skilled hand weavers, strict quality inspection procedures and perfect service. Many clients create their own brand with us — we offer packaging service and customized colors.</p>
+      <p id="aboutP3">We are willing to help you obtain greater achievement in your business, and wish to establish a long-term, stable and win-win cooperation with you.</p>
+      <a class="btn btn-gold" href="contact.html" id="aboutCta">Contact Us Now</a>
+    </div>
+  </div></section>
+
+  <section class="section-sm stats"><div class="wrap" id="aboutStats">
+    <div class="stat reveal"><b>20<i>+</i></b><span>Years of Experience</span></div>
+    <div class="stat reveal"><b>50<i>+</i></b><span>Countries Served</span></div>
+    <div class="stat reveal"><b>100<i>%</i></b><span>Cuticle Aligned Remy</span></div>
+    <div class="stat reveal"><b>10<i>k+</i></b><span>Happy Clients</span></div>
+  </div></section>
+
+  <section class="section"><div class="wrap">
+    <div class="center reveal"><span class="eyebrow" id="mileEyebrow">Our Journey</span><h2 class="h2" id="mileTitle">Milestones</h2></div>
+    <div class="timeline" id="timeline">
+      <div class="tl-item reveal"><b>2005</b><h4>Founded</h4><p>Ruis Hair established in Shandong, China.</p></div>
+      <div class="tl-item reveal"><b>2012</b><h4>Global Export</h4><p>Started supplying salons across Europe & America.</p></div>
+      <div class="tl-item reveal"><b>2018</b><h4>New Product Lines</h4><p>Launched genius weft, butterfly & flat weft.</p></div>
+      <div class="tl-item reveal"><b>2025</b><h4>OEM & Custom</h4><p>Expanded packaging & custom color services.</p></div>
+    </div>
+  </div></section>
+
+  <!-- 展会风采 -->
+  <section class="section" style="background:var(--cream)"><div class="wrap">
+    <div class="center reveal"><span class="eyebrow" id="exEyebrow">Trade Shows</span><h2 class="h2" id="exTitle">Meet Us at Global Exhibitions</h2><p class="muted" id="exDesc" style="max-width:620px;margin:8px auto 0">We regularly attend international beauty & hair shows to meet clients face-to-face. Come visit our booth!</p></div>
+    <div class="ex-grid" id="exGrid"></div>
+  </div></section>
+
+  <section class="section why"><div class="wrap">
+    <div class="center reveal"><span class="eyebrow" id="strEyebrow">Our Strengths</span><h2 class="h2" id="strTitle">What Sets Us Apart</h2></div>
+    <div class="why-grid" id="strGrid">
+      <div class="why-item reveal"><div class="num">01</div><h3>Own Factory</h3><p>Complete control over production, from raw hair to finished product.</p></div>
+      <div class="why-item reveal"><div class="num">02</div><h3>Skilled Craftsmen</h3><p>Experienced hand weavers ensuring every weft is soft and durable.</p></div>
+      <div class="why-item reveal"><div class="num">03</div><h3>Quality First</h3><p>Strict inspection at every stage — cuticle direction, drawing, color.</p></div>
+      <div class="why-item reveal"><div class="num">04</div><h3>Win-Win Service</h3><p>Long-term partnerships with flexible MOQ and dedicated support.</p></div>
+    </div>
+  </div></section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/cloud-config.js"></script>
+  <script src="assets/js/cloud-data.js"></script>
+  <script src="assets/js/cloud-sync.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    (function renderAbout(){
+      var c = getSiteContent().about;
+      document.getElementById('aboutCrumb').textContent = c.crumb;
+      document.getElementById('aboutTitle').textContent = c.title;
+      document.getElementById('aboutSubtitle').textContent = c.subtitle;
+      document.getElementById('aboutImg').src = c.img;
+      document.getElementById('aboutFounded').textContent = c.founded;
+      document.getElementById('aboutEyebrow').textContent = c.eyebrow;
+      document.getElementById('aboutHeading').textContent = c.heading;
+      document.getElementById('aboutP1').textContent = c.p1;
+      document.getElementById('aboutP2').textContent = c.p2;
+      document.getElementById('aboutP3').textContent = c.p3;
+      document.getElementById('aboutCta').textContent = c.ctaBtn;
+
+      // 数据条
+      var statN = [c.stat1N, c.stat2N, c.stat3N, c.stat4N];
+      var statL = [c.stat1L, c.stat2L, c.stat3L, c.stat4L];
+      document.querySelectorAll('#aboutStats .stat').forEach(function(s, i){
+        s.querySelector('b').innerHTML = (statN[i] || '').replace(/([+%]|k\+)/g, '<i>$1</i>');
+        s.querySelector('span').textContent = statL[i] || '';
+      });
+
+      // 里程碑
+      var mY = [c.m1Y, c.m2Y, c.m3Y, c.m4Y];
+      var mT = [c.m1T, c.m2T, c.m3T, c.m4T];
+      var mD = [c.m1D, c.m2D, c.m3D, c.m4D];
+      document.querySelectorAll('#timeline .tl-item').forEach(function(it, i){
+        it.querySelector('b').textContent = mY[i] || '';
+        it.querySelector('h4').textContent = mT[i] || '';
+        it.querySelector('p').textContent = mD[i] || '';
+      });
+
+      // 优势
+      document.getElementById('strEyebrow').textContent = c.strEyebrow;
+      document.getElementById('strTitle').textContent = c.strTitle;
+      var sT = [c.s1T, c.s2T, c.s3T, c.s4T];
+      var sD = [c.s1D, c.s2D, c.s3D, c.s4D];
+      document.querySelectorAll('#strGrid .why-item h3').forEach(function(h, i){ h.textContent = sT[i] || ''; });
+      document.querySelectorAll('#strGrid .why-item p').forEach(function(p, i){ p.textContent = sD[i] || ''; });
+
+      // 展会风采图集
+      var ex = c.exhibition || [];
+      var exImgs = Array.isArray(ex) ? ex : [];
+      document.getElementById('exEyebrow').textContent = c.exEyebrow || 'Trade Shows';
+      document.getElementById('exTitle').textContent = c.exTitle || 'Meet Us at Global Exhibitions';
+      document.getElementById('exDesc').textContent = c.exDesc || '';
+      var exGrid = document.getElementById('exGrid');
+      if (exGrid) {
+        exGrid.innerHTML = exImgs.map(function(src){
+          return '<div class="ex-item reveal"><img src="' + src + '" alt="Trade show" loading="lazy"></div>';
+        }).join('') || '<p class="muted" style="text-align:center">Exhibition photos coming soon.</p>';
+      }
+    })();
+  </script>
+</body>
+</html>

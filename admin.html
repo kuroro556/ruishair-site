@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>后台管理 - Ruis Hair</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="admin-body">
+
+  <!-- 登录视图 -->
+  <div id="loginView" class="admin-login">
+    <div class="login-card">
+      <div class="brand"><img src="assets/img/logo.png" alt="Ruis Hair"><span class="btxt">RUIS HAIR<small>ADMIN PANEL</small></span></div>
+      <h2>管理员登录</h2>
+      <p class="sub">登录后台管理产品与询盘</p>
+      <form id="loginForm">
+        <div class="field"><label>邮箱</label><input id="loginUser" type="email" autocomplete="username" placeholder="admin@example.com"></div>
+        <div class="field"><label>密码</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••"></div>
+        <div id="loginErr" style="color:#A32D2D;font-size:13px;min-height:20px"></div>
+        <button class="btn btn-gold btn-block" type="submit" id="loginSubmitBtn">登录</button>
+      </form>
+      <div class="login-hint" id="loginHint">仅限管理员访问</div>
+    </div>
+  </div>
+
+  <!-- 后台主视图 -->
+  <div id="adminShell" class="admin-shell" style="display:none">
+    <aside class="admin-side">
+      <div class="brand"><img src="assets/img/logo.png" alt=""><span class="btxt">RUIS HAIR<small>ADMIN PANEL</small></span></div>
+      <nav class="admin-nav">
+        <a class="active" data-view="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>仪表盘</a>
+        <a data-view="products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 7l-8-4-8 4 8 4 8-4zM4 7v10l8 4 8-4V7M12 11v10"/></svg>品类管理</a>
+        <a data-view="inquiries"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>询盘留言 <span id="inqNavBadge" class="tag" style="margin-left:auto">0</span></a>
+        <a data-view="whatsapps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>WhatsApp 号码</a>
+        <a data-view="payment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>支付设置</a>
+        <a data-view="homepage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>内容管理</a>
+        <a data-view="tips"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V4a2 2 0 00-2-2H6.5A2.5 2.5 0 004 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 006.5 22H20v-5"/></svg>文章 Tips</a>
+        <a data-view="reviews"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>客户好评</a>
+        <a data-view="customers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>客户资料</a>
+        <a data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1-2 2-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.6V21h-2.8v-.1a1.7 1.7 0 00-1.1-1.6 1.7 1.7 0 00-1.9.3l-.1.1-2-2 .1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.6-1H3v-2.8h.1a1.7 1.7 0 001.6-1.1 1.7 1.7 0 00-.3-1.9l-.1-.1 2-2 .1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.6V3h2.8v.1a1.7 1.7 0 001 1.6 1.7 1.7 0 001.9-.3l.1-.1 2 2-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.6 1H21v2.8h-.1a1.7 1.7 0 00-1.5 1z"/></svg>设置</a>
+      </nav>
+      <div class="logout"><a data-view="logout" style="color:#bdb4aa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:19px;height:19px"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>退出登录</a></div>
+    </aside>
+    <main class="admin-main">
+      <div class="admin-top"><h1 id="viewTitle">仪表盘</h1><div class="who">欢迎回来，<b id="whoUser">admin</b></div></div>
+
+      <!-- 仪表盘 -->
+      <section class="view active" id="view-dash">
+        <div class="stat-cards">
+          <div class="stat-card"><div class="lbl">品类总数</div><div class="val" id="statProducts">0</div></div>
+          <div class="stat-card"><div class="lbl">询盘留言</div><div class="val" id="statInq">0</div></div>
+          <div class="stat-card"><div class="lbl">颜色总数</div><div class="val" id="statCats">0</div></div>
+          <div class="stat-card"><div class="lbl">平均价格</div><div class="val" id="statAvg">$0</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>最近询盘</h3><a class="link-all" onclick="go('inquiries')">查看全部 →</a></div>
+          <div class="tbl-wrap"><table class="admin-tbl"><thead><tr><th>姓名</th><th>邮箱</th><th>产品</th><th>时间</th></tr></thead><tbody id="recentInq"></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- 产品管理（品类） -->
+      <section class="view" id="view-products">
+        <div class="panel">
+          <div class="panel-head"><h3>品类管理</h3><button class="btn btn-gold" onclick="openCatEdit()">+ 新增品类</button></div>
+          <p class="muted" style="font-size:13px;padding:0 24px 14px">每个品类包含多种颜色，每种颜色有 7 个尺寸（16~28 寸）各自的价格。点击「编辑」管理颜色、尺寸价格和细节图。</p>
+          <div class="tbl-wrap"><table class="admin-tbl">
+            <thead><tr><th>封面</th><th>品类</th><th>颜色数</th><th>细节图</th><th>16寸起价</th><th>操作</th></tr></thead>
+            <tbody id="catRows"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- 品类编辑 -->
+      <section class="view" id="view-catedit">
+        <div class="panel" style="max-width:1080px">
+          <div class="panel-head"><h3 id="catEditTitle">编辑品类</h3><div style="display:flex;gap:8px">
+            <button class="btn btn-outline" onclick="go('products')">← 返回列表</button>
+            <button class="btn btn-gold" onclick="saveCategory()">保存品类</button>
+          </div></div>
+          <div style="padding:24px">
+            <input type="hidden" id="ceId">
+            <div class="grid2">
+              <div class="field"><label>品类名称（英文）</label><input id="ceName" placeholder="Genius Weft"></div>
+              <div class="field"><label>副标题（一句话卖点）</label><input id="ceSub" placeholder="Invisible & thin"></div>
+            </div>
+            <div class="field"><label>品类描述</label><textarea id="ceDesc" style="min-height:64px"></textarea></div>
+            <div class="field"><label>封面图（列表/首页展示）</label>
+              <div class="img-pick" id="ceCoverPick"></div>
+              <input id="ceCover" placeholder="图片路径，如 assets/img/categories/genius-weft/colors/c01.jpg">
+            </div>
+            <div class="field"><label>细节图（品类页顶部滚动多图，可添加多张）</label>
+              <div id="ceDetailList" style="display:flex;flex-direction:column;gap:8px"></div>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <button class="btn btn-outline" style="padding:6px 14px;font-size:12px" onclick="addCeDetail('')">+ 添加细节图</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="max-width:1080px;margin-top:20px">
+          <div class="panel-head"><h3>颜色与尺寸价格</h3><div style="display:flex;gap:8px">
+            <button class="btn btn-outline" onclick="addCeColor()">+ 添加颜色</button>
+          </div></div>
+          <div style="padding:0 24px 16px">
+            <p class="muted" style="font-size:12.5px;margin-bottom:8px">每个颜色 7 个尺寸独立定价（单位：美元）。「图片」为该颜色对应的颜色图。颜色名即图片文件名对应的色号。</p>
+          </div>
+          <div class="tbl-wrap" style="max-height:560px;overflow:auto">
+            <table class="admin-tbl" id="ceColorTable">
+              <thead><tr><th style="min-width:52px">预览</th><th style="min-width:90px">颜色名</th><th>16"</th><th>18"</th><th>20"</th><th>22"</th><th>24"</th><th>26"</th><th>28"</th><th>图片</th><th style="min-width:52px">操作</th></tr></thead>
+              <tbody id="ceColorRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 询盘 -->
+      <section class="view" id="view-inquiries">
+        <div class="panel">
+          <div class="panel-head"><h3>询盘留言</h3><button class="btn btn-outline" onclick="clearAllInq()">清空</button></div>
+          <div class="tbl-wrap"><table class="admin-tbl">
+            <thead><tr><th>姓名</th><th>邮箱</th><th>产品</th><th>留言</th><th>时间</th><th>操作</th></tr></thead>
+            <tbody id="inqRows"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- WhatsApp 号码管理 -->
+      <section class="view" id="view-whatsapps">
+        <div class="panel" style="max-width:620px">
+          <div class="panel-head"><h3>业务员 WhatsApp 号码</h3></div>
+          <div style="padding:24px">
+            <p class="muted" style="font-size:13px;margin-bottom:6px">最多可配置 <b>10 个</b>号码。客户每次点击网站的 WhatsApp 浮动按钮或聊天窗口，系统会<b>随机分配</b>其中一名业务员，实现客户自动分流。</p>
+            <p class="muted" style="font-size:12px;margin-bottom:18px;color:#a32d2d">格式：纯数字、带国家码（中国 +86 即 <b>86</b> 开头），不要加 +、空格或横线。例：8618127350913</p>
+            <div id="waRows" style="display:flex;flex-direction:column;gap:10px"></div>
+            <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+              <button class="btn btn-outline" onclick="addWaRow('')">+ 添加号码</button>
+              <button class="btn btn-gold" onclick="saveWaList()">保存号码</button>
+            </div>
+            <div id="waMsg" style="font-size:13px;min-height:20px;margin-top:12px"></div>
+          </div>
+        </div>
+        <div class="panel" style="max-width:620px;margin-top:20px">
+          <div class="panel-head"><h3>当前配置</h3></div>
+          <div style="padding:24px">
+            <div id="waCurrent" class="muted" style="font-size:13px;line-height:1.8"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 内容管理（全站图片与文字） -->
+      <section class="view" id="view-homepage">
+        <div class="panel" style="max-width:860px">
+          <div class="panel-head"><h3>全站内容管理</h3><div id="cmTabHint" class="muted" style="font-size:12px"></div></div>
+          <div style="padding:0">
+            <div class="cm-tabs" id="cmTabs"></div>
+            <div id="cmBody" style="padding:24px"></div>
+            <div style="padding:0 24px 24px">
+              <div id="cmMsg" style="font-size:13px;min-height:20px;margin-bottom:10px"></div>
+              <div style="display:flex;gap:10px">
+                <button class="btn btn-gold" onclick="saveContent()">保存本页内容</button>
+                <button class="btn btn-outline" onclick="resetContent()">恢复本页默认</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 文章 Tips 管理 -->
+      <section class="view" id="view-tips">
+        <div class="panel">
+          <div class="panel-head"><h3>护理文章管理</h3><button class="btn btn-gold" onclick="openTipModal()">+ 发布文章</button></div>
+          <p class="muted" style="font-size:13px;padding:0 24px 14px">发布接发护理/造型/保养类文章，支持上传图片。文章会展示在前台「Hair Tips」页面。</p>
+          <div class="tbl-wrap"><table class="admin-tbl">
+            <thead><tr><th>封面</th><th>标题</th><th>分类</th><th>日期</th><th>操作</th></tr></thead>
+            <tbody id="tipRows"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- 客户好评管理 -->
+      <section class="view" id="view-reviews">
+        <div class="panel">
+          <div class="panel-head"><h3>客户好评管理</h3><button class="btn btn-gold" onclick="openReviewModal()">+ 添加好评</button></div>
+          <p class="muted" style="font-size:13px;padding:0 24px 14px">添加客户评价（可带图片、评分），展示在首页「What Our Clients Say」滚动区域。</p>
+          <div class="tbl-wrap"><table class="admin-tbl">
+            <thead><tr><th>头像</th><th>客户</th><th>国家 / 身份</th><th>评分</th><th>日期</th><th>评价内容</th><th>操作</th></tr></thead>
+            <tbody id="reviewRows"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- 客户资料 -->
+      <section class="view" id="view-customers">
+        <div class="panel">
+          <div class="panel-head"><h3>客户资料</h3><span class="muted" style="font-size:13px">共 <b id="customerCount">0</b> 位注册客户</span></div>
+          <p class="muted" style="font-size:13px;padding:0 24px 14px">客户在前台通过「邮箱注册」提交的资料（国家、姓名、电话、地址、邮箱、头像）。数据保存在本浏览器 localStorage。</p>
+          <div class="tbl-wrap"><table class="admin-tbl">
+            <thead><tr><th>头像</th><th>姓名</th><th>邮箱</th><th>国家</th><th>电话</th><th>地址</th><th>注册时间</th><th>操作</th></tr></thead>
+            <tbody id="customerRows"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- 设置 -->
+      <section class="view" id="view-payment">
+        <div class="panel" style="max-width:720px">
+          <div class="panel-head"><h3>支付 / 收款设置</h3></div>
+          <p class="muted" style="font-size:13px;padding:0 24px 14px">控制网站前台展示的收款方式与银行信息。关掉「展示收款信息」后，联系页、商品详情页、发票页都不会再显示收款相关模块。</p>
+          <div style="padding:0 24px 24px">
+            <div class="field switch-field">
+              <label>在网站展示收款信息</label>
+              <label class="switch"><input type="checkbox" id="payVisible" checked><span class="slider"></span></label>
+            </div>
+
+            <div class="field">
+              <label>收款方式列表（每行一个：名称 | 说明 | 标签，标签可留空如 Recommended）</label>
+              <textarea id="payMethods" style="min-height:120px" placeholder="T/T Bank Transfer | Recommended for bulk orders · 30% deposit + 70% before shipment | Recommended"></textarea>
+            </div>
+
+            <div class="grid2" style="margin-top:6px">
+              <div class="field"><label>受益人名称</label><input id="payBeneficiary" placeholder="Wanting Huang"></div>
+              <div class="field"><label>开户银行</label><input id="payBank" placeholder="Zhejiang Chouzhou Commercial Bank"></div>
+              <div class="field"><label>银行账号</label><input id="payAccount" placeholder="账号"></div>
+              <div class="field"><label>SWIFT Code</label><input id="paySwift" placeholder="CZCBCN2XXXX"></div>
+            </div>
+            <div class="field"><label>银行地址</label><input id="payBankAddr" placeholder="银行地址"></div>
+            <div class="grid2" style="margin-top:6px">
+              <div class="field"><label>中间银行（Intermediary Bank）</label><input id="payIntermediary" placeholder="CITIBANK N.A, NEW YORK"></div>
+              <div class="field"><label>中间银行 SWIFT</label><input id="payIntermediarySwift" placeholder="CITIUS33XXX"></div>
+            </div>
+            <div class="field"><label>通知邮箱（Notify Email）</label><input id="payNotifyEmail" placeholder="info@luxestarmir.com"></div>
+
+            <div id="payMsg" style="font-size:13px;min-height:20px;margin-bottom:8px"></div>
+            <button class="btn btn-gold" onclick="savePayment()">保存支付设置</button>
+            <button class="btn btn-outline" onclick="restoreDefaultPayment()">恢复默认收款方式</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-settings">
+        <div class="panel" style="max-width:560px">
+          <div class="panel-head"><h3>修改管理员密码</h3></div>
+          <div style="padding:24px">
+            <div class="field"><label>当前密码</label><input id="oldPass" type="password" placeholder="当前密码"></div>
+            <div class="field"><label>新密码</label><input id="newPass" type="password" placeholder="至少 4 位"></div>
+            <div class="field"><label>确认新密码</label><input id="confirmPass" type="password" placeholder="再次输入新密码"></div>
+            <div id="setMsg" style="font-size:13px;min-height:20px"></div>
+            <button class="btn btn-dark" onclick="changePassword()">保存密码</button>
+          </div>
+        </div>
+        <div class="panel" style="max-width:560px;margin-top:20px">
+          <div class="panel-head"><h3>数据管理</h3></div>
+          <div style="padding:24px">
+            <p class="muted" style="font-size:13px;margin-bottom:14px">产品数据保存在本浏览器。可导出备份或恢复为初始模板数据。</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-outline" onclick="exportData()">导出产品数据</button>
+              <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">导入数据</button>
+              <button class="btn btn-outline" onclick="resetProductsData()" style="color:#A32D2D;border-color:#A32D2D">恢复初始</button>
+            </div>
+            <input type="file" id="importFile" accept="application/json" style="display:none">
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 文章编辑弹窗 -->
+  <div class="modal-mask" id="tipModal">
+    <div class="modal">
+      <div class="modal-head"><h3 id="tipModalTitle">发布文章</h3><button class="icon-btn" onclick="closeTipModal()">✕</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="tipId">
+        <div class="field"><label>文章标题</label><input id="tipTitle" placeholder="How to wash Remy hair extensions..."></div>
+        <div class="grid2">
+          <div class="field"><label>分类</label><input id="tipCat" placeholder="Care / Styling / Storage"></div>
+          <div class="field"><label>日期</label><input id="tipDate" type="date"></div>
+        </div>
+        <div class="field"><label>封面图（可上传，或填图片 URL）</label>
+          <div class="tip-img-upload">
+            <img id="tipImgPreview" src="" alt="" style="display:none">
+            <div class="tip-upload-btns">
+              <button class="btn btn-outline" type="button" onclick="document.getElementById('tipImgFile').click()">上传图片</button>
+              <input type="file" id="tipImgFile" accept="image/*" style="display:none">
+            </div>
+            <input id="tipImg" placeholder="图片 URL 或本地路径（如 assets/img/xxx.jpg）">
+          </div>
+        </div>
+        <div class="field"><label>摘要（列表页显示）</label><textarea id="tipExcerpt" style="min-height:56px" placeholder="简短摘要..."></textarea></div>
+        <div class="field"><label>正文（每行一段，支持 • 列表）</label><textarea id="tipBody" style="min-height:180px" placeholder="正文内容，换行分段..."></textarea></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-light" onclick="closeTipModal()">取消</button><button class="btn btn-gold" onclick="saveTip()">保存文章</button></div>
+    </div>
+  </div>
+
+  <!-- 好评编辑弹窗 -->
+  <div class="modal-mask" id="reviewModal">
+    <div class="modal">
+      <div class="modal-head"><h3 id="reviewModalTitle">添加好评</h3><button class="icon-btn" onclick="closeReviewModal()">✕</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="reviewId">
+        <div class="grid2">
+          <div class="field"><label>客户姓名</label><input id="reviewName" placeholder="Sophie Martin"></div>
+          <div class="field"><label>国家</label><input id="reviewCountry" placeholder="France / USA ..."></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>身份（可留空）</label><input id="reviewRole" placeholder="Salon Owner / Hairstylist / Distributor"></div>
+          <div class="field"><label>购买产品（可留空）</label><input id="reviewProduct" placeholder="Genius Weft"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>评分</label>
+            <div class="rating-pick" id="ratingPick">
+              <button type="button" data-v="1">★</button><button type="button" data-v="2">★</button><button type="button" data-v="3">★</button><button type="button" data-v="4">★</button><button type="button" data-v="5">★</button>
+            </div>
+          </div>
+          <div class="field"><label>评论日期</label><input id="reviewDate" type="date"></div>
+        </div>
+        <div class="field"><label>评价内容</label><textarea id="reviewText" style="min-height:90px" placeholder="客户的原话..."></textarea></div>
+        <div class="field"><label>头像（圆形，可上传或填 URL，可留空）</label>
+          <div class="tip-img-upload">
+            <img id="reviewAvatarPreview" src="" alt="" style="display:none;border-radius:50%">
+            <div class="tip-upload-btns">
+              <button class="btn btn-outline" type="button" onclick="document.getElementById('reviewAvatarFile').click()">上传头像</button>
+              <input type="file" id="reviewAvatarFile" accept="image/*" style="display:none">
+            </div>
+            <input id="reviewAvatar" placeholder="头像图片 URL 或本地路径">
+          </div>
+        </div>
+        <div class="field"><label>配图（购买实物图，可上传或填 URL，可留空）</label>
+          <div class="tip-img-upload">
+            <img id="reviewImgPreview" src="" alt="" style="display:none">
+            <div class="tip-upload-btns">
+              <button class="btn btn-outline" type="button" onclick="document.getElementById('reviewImgFile').click()">上传配图</button>
+              <input type="file" id="reviewImgFile" accept="image/*" style="display:none">
+            </div>
+            <input id="reviewImg" placeholder="配图 URL 或本地路径">
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-light" onclick="closeReviewModal()">取消</button><button class="btn btn-gold" onclick="saveReview()">保存好评</button></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/cloud-config.js"></script>
+  <script src="assets/js/cloud-data.js"></script>
+  <script>
+    const $ = id => document.getElementById(id);
+    const IMG_LIST = ['prod-genius-1.jpg','prod-genius-2.jpg','prod-machine-1.jpg','prod-machine-2.jpg','prod-handtied-1.jpg','prod-handtied-2.jpg','prod-tape-1.jpg','prod-tape-2.jpg','prod-clipins-1.jpg','prod-clipins-2.jpg','cat-genius.jpg','cat-machine.jpg','cat-handtied.jpg','cat-butterfly.jpg','cat-flat.jpg','cat-tape.jpg','cat-keratin.jpg','cat-clipins.jpg','cat-ponytail.jpg','cat-halo.jpg','factory.jpg'];
+    // 新品类封面图（供封面/图片选择）
+    const CAT_COVERS = ['genius-weft','machine-weft','butterfly-weft','flat-tip','volume-genius-weft','tape-ins','invisible-tape','i-tips','nano-ring'].map(s => `categories/${s}/colors/c01.jpg`);
+
+    // ---------- 登录（云 Auth：邮箱 + 密码） ----------
+    function checkAuth() {
+      initCloud();
+      cloudGetSession().then(session => {
+        if (session) {
+          // 校验是否管理员邮箱
+          const email = (session.user && session.user.email) || '';
+          if (email && email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+            showAdmin(email);
+          } else {
+            showLogin('该账号无管理员权限');
+          }
+        } else {
+          showLogin('');
+        }
+      }).catch(() => showLogin(''));
+    }
+    function showLogin(msg) {
+      $('loginView').style.display = 'grid';
+      $('adminShell').style.display = 'none';
+      if (msg) $('loginErr').textContent = msg;
+    }
+    $('loginForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = $('loginUser').value.trim();
+      const p = $('loginPass').value;
+      if (!email || !p) { $('loginErr').textContent = '请输入邮箱和密码'; return; }
+      $('loginErr').textContent = '登录中…';
+
+      const res = await cloudSignIn(email, p);
+      if (!res.ok) {
+        $('loginErr').textContent = '登录失败，请检查邮箱和密码';
+        return;
+      }
+      await enterAdmin(email);
+    });
+
+    // 登录成功后的统一入口
+    async function enterAdmin(email) {
+      const session = await cloudGetSession();
+      const uemail = (session && session.user && session.user.email) || email;
+      if (uemail.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+        $('loginErr').textContent = '该账号无管理员权限';
+        await cloudSignOut();
+        return;
+      }
+      showAdmin(uemail);
+    }
+    function showAdmin(email) {
+      $('loginView').style.display = 'none';
+      $('adminShell').style.display = 'grid';
+      $('whoUser').textContent = email || 'admin';
+      refreshAll();
+      seedCloudIfEmpty(); // 首次登录时，若云端无数据则用当前数据初始化
+      const hash = location.hash.slice(1);
+      if (['dash','products','inquiries','whatsapps','payment','homepage','tips','reviews','customers','settings'].includes(hash)) go(hash);
+    }
+
+    // 首次登录时，若云端还没有数据，则把当前（默认）数据上传到云端，完成初始化
+    async function seedCloudIfEmpty() {
+      try {
+        const seeds = [
+          { key: CLOUD_KEYS.categories, val: loadCategories() },
+          { key: CLOUD_KEYS.siteContent, val: getSiteContent() },
+          { key: CLOUD_KEYS.tips, val: loadTips() },
+          { key: CLOUD_KEYS.reviews, val: loadReviews() },
+          { key: CLOUD_KEYS.whatsapps, val: getWhatsApps() },
+          { key: CLOUD_KEYS.customers, val: getUsers() }
+        ];
+        for (const s of seeds) {
+          const existing = await cloudGet(s.key);
+          if (existing == null) {
+            await cloudSet(s.key, s.val);
+          }
+        }
+      } catch (e) { console.warn('[admin] seed 失败', e); }
+    }
+
+    // ---------- 导航 ----------
+    document.querySelectorAll('.admin-nav a, .admin-side .logout a').forEach(a => {
+      a.addEventListener('click', () => {
+        const v = a.dataset.view;
+        if (v === 'logout') { cloudSignOut().then(()=>location.reload()); return; }
+        go(v);
+      });
+    });
+    function go(view) {
+      document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('.admin-nav a').forEach(x => x.classList.remove('active'));
+      $('view-' + view).classList.add('active');
+      const nav = document.querySelector(`.admin-nav a[data-view="${view}"]`);
+      if (nav) nav.classList.add('active');
+      const titles = { dash:'仪表盘', products:'品类管理', catedit:'品类编辑', inquiries:'询盘留言', whatsapps:'WhatsApp 号码', payment:'支付设置', homepage:'内容管理', tips:'文章 Tips', reviews:'客户好评', customers:'客户资料', settings:'设置' };
+      $('viewTitle').textContent = titles[view] || view;
+      if (view === 'dash') renderDash();
+      if (view === 'products') renderProducts();
+      if (view === 'inquiries') renderInquiries();
+      if (view === 'whatsapps') renderWhatsApps();
+      if (view === 'payment') renderPayment();
+      if (view === 'homepage') renderHomepage();
+      if (view === 'tips') renderTips();
+      if (view === 'reviews') renderReviews();
+      if (view === 'customers') renderCustomers();
+      history.replaceState(null, '', '#' + view);
+    }
+
+    // ---------- 渲染 ----------
+    function refreshAll() { renderDash(); renderProducts(); renderInquiries(); $('inqNavBadge').textContent = getInquiries().length; }
+
+    function renderDash() {
+      const prods = loadProducts(), inqs = getInquiries();
+      $('statProducts').textContent = prods.length;
+      $('statInq').textContent = inqs.length;
+      const colorCount = prods.reduce((s,c)=>s+(c.colors?c.colors.length:0),0);
+      $('statCats').textContent = colorCount;
+      const avg = prods.length ? prods.reduce((s,p)=>s+Number(p.base||0),0)/prods.length : 0;
+      $('statAvg').textContent = money(avg);
+      $('recentInq').innerHTML = inqs.length
+        ? inqs.slice(0,5).map(i=>`<tr><td>${esc(i.name||'-')}</td><td>${esc(i.email||'-')}</td><td>${esc(i.product||'-')}</td><td>${fmtTime(i.time)}</td></tr>`).join('')
+        : '<tr><td colspan="4" class="muted" style="text-align:center;padding:24px">暂无询盘</td></tr>';
+    }
+
+    function renderProducts() {
+      const rows = loadProducts().map(c => {
+        const img = c.cover || (c.colors && c.colors[0] ? c.colors[0].img : '');
+        const minPrice = c.colors && c.colors.length ? Math.min(...c.colors.map(cl => Number(cl.prices[16]||0))) : (c.base||0);
+        return `<tr>
+          <td><img src="${img}" alt=""></td>
+          <td><div style="font-weight:600">${esc(c.name)}</div><div class="muted" style="font-size:11px">${esc(c.sub||'')}</div></td>
+          <td><span class="tag gray">${c.colors?c.colors.length:0} 色</span></td>
+          <td>${c.details?c.details.length:0} 张</td>
+          <td>${money(minPrice)}</td>
+          <td><div class="row-act"><button class="btn-edit" onclick="openCatEdit('${c.id}')">编辑</button><button class="btn-del" onclick="delCategory('${c.id}')">删除</button></div></td>
+        </tr>`;
+      }).join('');
+      $('catRows').innerHTML = rows || '<tr><td colspan="6" class="muted" style="text-align:center;padding:24px">暂无品类，点击右上角新增</td></tr>';
+    }
+
+    // ---------- 品类编辑 ----------
+    function openCatEdit(id) {
+      const c = id ? getCategory(id) : { id:'', name:'', sub:'', desc:'', cover:'', details:[], colors:[] };
+      $('ceId').value = c.id || '';
+      $('catEditTitle').textContent = c.id ? '编辑品类：' + c.name : '新增品类';
+      $('ceName').value = c.name || '';
+      $('ceSub').value = c.sub || '';
+      $('ceDesc').value = c.desc || '';
+      $('ceCover').value = c.cover || '';
+      // 封面图选择器
+      $('ceCoverPick').innerHTML = CAT_COVERS.map(f=>{
+        const full = IMG + f;
+        return `<label><input type="radio" name="ceCoverRadio" value="${full}" ${c.cover===full?'checked':''}><img src="${full}" alt="${f}"></label>`;
+      }).join('');
+      $('ceCoverPick').querySelectorAll('input').forEach(r=>r.addEventListener('change',()=>{ if(r.checked) $('ceCover').value = r.value; }));
+      // 细节图列表
+      renderCeDetails(c.details || []);
+      // 颜色价格表
+      renderCeColors(c.colors || []);
+      go('catedit');
+    }
+
+    function renderCeDetails(details) {
+      const box = $('ceDetailList');
+      box.innerHTML = '';
+      (details && details.length ? details : ['']).forEach(d => addCeDetail(d));
+    }
+    function addCeDetail(val) {
+      const d = document.createElement('div');
+      d.style.cssText = 'display:flex;gap:8px;align-items:center';
+      d.innerHTML = `<input class="ce-detail-input" value="${escAttr(val||'')}" placeholder="图片路径，如 assets/img/categories/genius-weft/details/d01.jpg" style="flex:1;border:1px solid var(--line);border-radius:6px;padding:9px 12px;font-size:13px"><button class="btn-del" onclick="this.parentElement.remove()">删除</button>`;
+      $('ceDetailList').appendChild(d);
+    }
+
+    function renderCeColors(colors) {
+      const box = $('ceColorRows');
+      box.innerHTML = '';
+      (colors && colors.length ? colors : []).forEach(c => addCeColorRow(c));
+    }
+    function addCeColor() {
+      addCeColorRow({ name:'', img:'', prices:{} });
+    }
+    function addCeColorRow(c) {
+      const tr = document.createElement('tr');
+      const prices = c.prices || {};
+      const sizeInputs = SIZES.map(s => {
+        const v = (prices[s] != null && prices[s] !== '') ? prices[s] : '';
+        return `<input class="ce-price" data-size="${s}" type="number" step="0.01" min="0" value="${escAttr(v)}" style="width:62px;border:1px solid var(--line);border-radius:6px;padding:6px;font-size:13px">`;
+      }).join('');
+      tr.innerHTML = `
+        <td>${c.img ? `<img src="${c.img}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:6px">` : '<span class="muted">—</span>'}</td>
+        <td><input class="ce-cname" value="${escAttr(c.name||'')}" placeholder="#60" style="width:90px;border:1px solid var(--line);border-radius:6px;padding:6px;font-size:13px"></td>
+        <td>${sizeInputs}</td>
+        <td><input class="ce-cimg" value="${escAttr(c.img||'')}" placeholder="图片路径" style="width:160px;border:1px solid var(--line);border-radius:6px;padding:6px;font-size:12px"></td>
+        <td><button class="btn-del" onclick="this.closest('tr').remove()">删除</button></td>`;
+      $('ceColorRows').appendChild(tr);
+    }
+
+    function saveCategory() {
+      const name = $('ceName').value.trim();
+      if (!name) { alert('请填写品类名称'); return; }
+      const id = $('ceId').value || ('cat-' + Date.now());
+      // 收集颜色
+      const colors = Array.from($('ceColorRows').children).map(tr => {
+        const nameEl = tr.querySelector('.ce-cname');
+        const imgEl = tr.querySelector('.ce-cimg');
+        const prices = {};
+        tr.querySelectorAll('.ce-price').forEach(inp => {
+          const s = inp.getAttribute('data-size');
+          const v = Number(inp.value);
+          prices[s] = (inp.value === '' ? '' : v);
+        });
+        const cn = nameEl.value.trim();
+        if (!cn && !imgEl.value.trim()) return null;
+        return { name: cn, img: imgEl.value.trim(), prices };
+      }).filter(Boolean);
+      // 收集细节图
+      const details = Array.from($('ceDetailList').querySelectorAll('.ce-detail-input')).map(i=>i.value.trim()).filter(Boolean);
+      // 计算 base（16寸最低价）
+      const base16 = colors.length ? Math.min(...colors.map(c => Number(c.prices[16])||99999)) : 0;
+      const obj = {
+        id, name,
+        sub: $('ceSub').value.trim(),
+        desc: $('ceDesc').value.trim(),
+        cover: $('ceCover').value.trim() || (colors.length ? colors[0].img : ''),
+        base: base16 === 99999 ? 0 : base16,
+        inc: 2,
+        details, colors
+      };
+      const all = loadCategories();
+      const idx = all.findIndex(x=>x.id===id);
+      if (idx >= 0) all[idx] = obj; else all.push(obj);
+      saveCategories(all);
+      alert('保存成功，前台已同步更新');
+      go('products');
+    }
+    function delCategory(id) {
+      if (!confirm('确定删除该品类？此操作不可恢复。')) return;
+      saveCategories(loadCategories().filter(x=>x.id!==id));
+      refreshAll();
+    }
+
+    function renderInquiries() {
+      $('inqRows').innerHTML = getInquiries().map(i => `<tr>
+        <td>${esc(i.name||'-')}</td><td>${esc(i.email||'-')}</td><td>${esc(i.product||'-')}</td>
+        <td style="max-width:300px">${esc(i.message||'-')}</td><td>${fmtTime(i.time)}</td>
+        <td><button class="btn-del" onclick="delInquiry('${i.id}')">删除</button></td>
+      </tr>`).join('') || '<tr><td colspan="6" class="muted" style="text-align:center;padding:24px">暂无询盘</td></tr>';
+      $('inqNavBadge').textContent = getInquiries().length;
+    }
+
+    // ---------- 询盘 ----------
+    function delInquiry(id) {
+      if (!confirm('删除这条询盘？')) return;
+      lsSet(STORE.inquiries, getInquiries().filter(x=>x.id!==id));
+      renderInquiries(); renderDash();
+    }
+    function clearAllInq() {
+      if (!confirm('确定清空全部询盘？此操作不可恢复。')) return;
+      clearInquiries(); renderInquiries(); renderDash();
+    }
+
+    // ---------- 文章 Tips 管理 ----------
+    function renderTips() {
+      const tips = loadTips();
+      $('tipRows').innerHTML = tips.map(t => `<tr>
+        <td><img src="${esc(t.image||'')}" alt="" onerror="this.style.display='none'"></td>
+        <td><div style="font-weight:600;max-width:360px">${esc(t.title||'')}</div><div class="muted" style="font-size:11px;max-width:360px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(t.excerpt||'')}</div></td>
+        <td><span class="tag gray">${esc(t.category||'-')}</span></td>
+        <td>${esc(t.date||'-')}</td>
+        <td><div class="row-act"><button class="btn-edit" onclick="openTipModal('${t.id}')">编辑</button><button class="btn-del" onclick="delTip('${t.id}')">删除</button></div></td>
+      </tr>`).join('') || '<tr><td colspan="5" class="muted" style="text-align:center;padding:24px">暂无文章，点击右上角发布</td></tr>';
+    }
+    function openTipModal(id) {
+      const t = id ? loadTips().find(x=>x.id===id) : null;
+      $('tipModalTitle').textContent = t ? '编辑文章' : '发布文章';
+      $('tipId').value = t ? t.id : '';
+      $('tipTitle').value = t ? (t.title||'') : '';
+      $('tipCat').value = t ? (t.category||'') : '';
+      $('tipDate').value = t ? (t.date||'') : new Date().toISOString().slice(0,10);
+      $('tipExcerpt').value = t ? (t.excerpt||'') : '';
+      $('tipBody').value = t ? (t.body||'') : '';
+      $('tipImg').value = t ? (t.image||'') : '';
+      const prev = $('tipImgPreview');
+      if (t && t.image && !t.image.startsWith('data:')) { prev.src = t.image; prev.style.display = 'block'; }
+      else if (t && t.image) { prev.src = t.image; prev.style.display = 'block'; }
+      else prev.style.display = 'none';
+      $('tipModal').classList.add('show');
+    }
+    function closeTipModal() { $('tipModal').classList.remove('show'); }
+    // 图片上传：转 base64 存 localStorage
+    $('tipImgFile').addEventListener('change', function(e) {
+      const f = e.target.files[0]; if (!f) return;
+      if (f.size > 2 * 1024 * 1024) { alert('图片过大，请选择 2MB 以内的图片'); return; }
+      const r = new FileReader();
+      r.onload = () => {
+        $('tipImg').value = r.result;
+        $('tipImgPreview').src = r.result;
+        $('tipImgPreview').style.display = 'block';
+      };
+      r.readAsDataURL(f);
+      e.target.value = '';
+    });
+    function saveTip() {
+      const title = $('tipTitle').value.trim();
+      if (!title) { alert('请填写文章标题'); return; }
+      const obj = {
+        id: $('tipId').value || ('tip-' + Date.now()),
+        title,
+        excerpt: $('tipExcerpt').value.trim(),
+        body: $('tipBody').value.trim(),
+        image: $('tipImg').value.trim(),
+        category: $('tipCat').value.trim(),
+        date: $('tipDate').value.trim(),
+        author: 'Ruis Hair Team'
+      };
+      const all = loadTips();
+      const idx = all.findIndex(x=>x.id===obj.id);
+      if (idx >= 0) all[idx] = obj; else all.unshift(obj);
+      saveTips(all);
+      closeTipModal(); renderTips();
+      alert('保存成功，前台 Tips 页面已同步更新');
+    }
+    function delTip(id) {
+      if (!confirm('确定删除这篇文章？')) return;
+      saveTips(loadTips().filter(x=>x.id!==id));
+      renderTips();
+    }
+
+    // ---------- 客户好评管理 ----------
+    function renderReviews() {
+      const revs = loadReviews();
+      $('reviewRows').innerHTML = revs.map(r => `<tr>
+        <td>${r.avatar ? `<img src="${esc(r.avatar)}" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover" onerror="this.style.display='none'">` : '<span class="muted">—</span>'}</td>
+        <td><div style="font-weight:600">${esc(r.name||'')}</div></td>
+        <td><span class="muted">${esc(r.country||'-')}</span> · <span class="muted">${esc(r.role||'-')}</span></td>
+        <td><span style="color:var(--gold)">${'★'.repeat(r.rating||5)}</span></td>
+        <td><span class="muted" style="font-size:12px">${esc(r.date||'-')}</span></td>
+        <td><div class="muted" style="max-width:240px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.text||'')}</div></td>
+        <td><div class="row-act"><button class="btn-edit" onclick="openReviewModal('${r.id}')">编辑</button><button class="btn-del" onclick="delReview('${r.id}')">删除</button></div></td>
+      </tr>`).join('') || '<tr><td colspan="7" class="muted" style="text-align:center;padding:24px">暂无好评，点击右上角添加</td></tr>';
+    }
+    let reviewRating = 5;
+    function openReviewModal(id) {
+      const r = id ? loadReviews().find(x=>x.id===id) : null;
+      $('reviewModalTitle').textContent = r ? '编辑好评' : '添加好评';
+      $('reviewId').value = r ? r.id : '';
+      $('reviewName').value = r ? (r.name||'') : '';
+      $('reviewCountry').value = r ? (r.country||'') : '';
+      $('reviewRole').value = r ? (r.role||'') : '';
+      $('reviewProduct').value = r ? (r.product||'') : '';
+      $('reviewText').value = r ? (r.text||'') : '';
+      $('reviewDate').value = r ? (r.date||'') : new Date().toISOString().slice(0,10);
+      $('reviewAvatar').value = r ? (r.avatar||'') : '';
+      $('reviewImg').value = r ? (r.image||'') : '';
+      reviewRating = r ? (Number(r.rating)||5) : 5;
+      paintRating();
+      const av = $('reviewAvatarPreview');
+      if (r && r.avatar) { av.src = r.avatar; av.style.display = 'block'; }
+      else av.style.display = 'none';
+      const prev = $('reviewImgPreview');
+      if (r && r.image) { prev.src = r.image; prev.style.display = 'block'; }
+      else prev.style.display = 'none';
+      $('reviewModal').classList.add('show');
+    }
+    function closeReviewModal() { $('reviewModal').classList.remove('show'); }
+    function paintRating() {
+      document.querySelectorAll('#ratingPick button').forEach(b => {
+        b.classList.toggle('on', +b.dataset.v <= reviewRating);
+      });
+    }
+    document.querySelectorAll('#ratingPick button').forEach(b => {
+      b.addEventListener('click', () => { reviewRating = +b.dataset.v; paintRating(); });
+    });
+    // 头像上传
+    $('reviewAvatarFile').addEventListener('change', function(e) {
+      const f = e.target.files[0]; if (!f) return;
+      if (f.size > 2 * 1024 * 1024) { alert('图片过大，请选择 2MB 以内的图片'); return; }
+      const r = new FileReader();
+      r.onload = () => {
+        $('reviewAvatar').value = r.result;
+        $('reviewAvatarPreview').src = r.result;
+        $('reviewAvatarPreview').style.display = 'block';
+      };
+      r.readAsDataURL(f);
+      e.target.value = '';
+    });
+    // 配图上传
+    $('reviewImgFile').addEventListener('change', function(e) {
+      const f = e.target.files[0]; if (!f) return;
+      if (f.size > 2 * 1024 * 1024) { alert('图片过大，请选择 2MB 以内的图片'); return; }
+      const r = new FileReader();
+      r.onload = () => {
+        $('reviewImg').value = r.result;
+        $('reviewImgPreview').src = r.result;
+        $('reviewImgPreview').style.display = 'block';
+      };
+      r.readAsDataURL(f);
+      e.target.value = '';
+    });
+    function saveReview() {
+      const name = $('reviewName').value.trim();
+      if (!name) { alert('请填写客户姓名'); return; }
+      const obj = {
+        id: $('reviewId').value || ('rev-' + Date.now()),
+        name,
+        country: $('reviewCountry').value.trim(),
+        role: $('reviewRole').value.trim(),
+        rating: reviewRating,
+        text: $('reviewText').value.trim(),
+        avatar: $('reviewAvatar').value.trim(),
+        image: $('reviewImg').value.trim(),
+        product: $('reviewProduct').value.trim(),
+        date: $('reviewDate').value.trim()
+      };
+      const all = loadReviews();
+      const idx = all.findIndex(x=>x.id===obj.id);
+      if (idx >= 0) all[idx] = obj; else all.unshift(obj);
+      saveReviews(all);
+      closeReviewModal(); renderReviews();
+      alert('保存成功，首页好评区已同步更新');
+    }
+    function delReview(id) {
+      if (!confirm('确定删除这条好评？')) return;
+      saveReviews(loadReviews().filter(x=>x.id!==id));
+      renderReviews();
+    }
+
+    // ---------- 客户资料管理 ----------
+    async function renderCustomers() {
+      // 优先从云端拉取最新客户列表
+      if (typeof cloudGet === 'function' && typeof CLOUD_KEYS !== 'undefined') {
+        try {
+          const remote = await cloudGet(CLOUD_KEYS.customers);
+          if (Array.isArray(remote)) { saveUsers(remote); }
+        } catch (e) { /* 云端不可用则用本地 */ }
+      }
+      const users = getUsers();
+      $('customerCount').textContent = users.length;
+      $('customerRows').innerHTML = users.map(u => `<tr>
+        <td>${u.avatar ? `<img src="${esc(u.avatar)}" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover" onerror="this.style.display='none'">` : '<span class="muted">—</span>'}</td>
+        <td><div style="font-weight:600">${esc(u.name||'-')}</div></td>
+        <td>${esc(u.email||'-')}</td>
+        <td>${esc(u.country||'-')}</td>
+        <td>${esc(u.phone||'-')}</td>
+        <td><div class="muted" style="max-width:200px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${esc(u.address||'')}">${esc(u.address||'-')}</div></td>
+        <td><span class="muted" style="font-size:12px">${fmtDateTime(u.createdAt)}</span></td>
+        <td><div class="row-act"><button class="btn-del" onclick="delCustomer('${u.id}')">删除</button></div></td>
+      </tr>`).join('') || '<tr><td colspan="8" class="muted" style="text-align:center;padding:24px">暂无注册客户</td></tr>';
+    }
+    function fmtDateTime(iso) {
+      if (!iso) return '-';
+      const d = new Date(iso);
+      if (isNaN(d)) return '-';
+      return d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) + ' ' + d.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+    }
+    function delCustomer(id) {
+      if (!confirm('确定删除这位客户资料？')) return;
+      const remaining = getUsers().filter(u=>u.id!==id);
+      saveUsers(remaining);
+      if (typeof cloudSyncCustomers === 'function') cloudSyncCustomers(remaining);
+      renderCustomers();
+    }
+
+    // ---------- WhatsApp 号码管理 ----------
+    function addWaRow(val) {
+      const d = document.createElement('div');
+      d.style.cssText = 'display:flex;gap:8px;align-items:center';
+      d.innerHTML = `<input class="wa-input" value="${escAttr(val||'')}" placeholder="8618127350913" style="flex:1;border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:14px"><button class="btn-del" onclick="this.parentElement.remove()">删除</button>`;
+      $('waRows').appendChild(d);
+    }
+    function renderWhatsApps() {
+      const list = getWhatsApps();
+      $('waRows').innerHTML = '';
+      (list.length ? list : ['']).forEach(n => addWaRow(n));
+      renderWaCurrent();
+    }
+    function renderWaCurrent() {
+      const list = getWhatsApps();
+      $('waCurrent').innerHTML = list.length
+        ? list.map((n,i) => `<div>业务员 ${i+1}：<b style="color:var(--gold)">${esc(n)}</b>　<a href="https://wa.me/${n}" target="_blank" style="color:#0f7a58">测试打开 →</a></div>`).join('')
+        : '尚未配置号码，点击上方「添加号码」开始配置。';
+    }
+    function saveWaList() {
+      const vals = Array.from($('waRows').querySelectorAll('.wa-input')).map(i => i.value.trim()).filter(Boolean);
+      const valid = vals.filter(v => /^\d{6,20}$/.test(v));
+      const invalid = vals.filter(v => !/^\d{6,20}$/.test(v));
+      if (invalid.length) { $('waMsg').style.color = '#A32D2D'; $('waMsg').textContent = '有号码格式错误（应为纯数字、带国家码）：' + invalid.join('、'); return; }
+      if (valid.length > 10) { $('waMsg').style.color = '#A32D2D'; $('waMsg').textContent = '最多只能配置 10 个号码'; return; }
+      if (!valid.length) { $('waMsg').style.color = '#A32D2D'; $('waMsg').textContent = '请至少填写一个号码'; return; }
+      saveWhatsApps(valid);
+      $('waMsg').style.color = '#0F6E56'; $('waMsg').textContent = '保存成功，已配置 ' + valid.length + ' 个业务员号码（前台立即生效）';
+      renderWaCurrent();
+    }
+
+    // ---------- 支付 / 收款设置 ----------
+    function renderPayment() {
+      const pay = getPaymentInfo();
+      $('payVisible').checked = pay.visible;
+      $('payMethods').value = (pay.methods || []).map(m => {
+        return [m.name || '', m.note || '', m.tag || ''].join(' | ');
+      }).join('\n');
+      const bank = pay.bank || {};
+      $('payBeneficiary').value = bank.beneficiary || '';
+      $('payBank').value = bank.bank || '';
+      $('payAccount').value = bank.account || '';
+      $('paySwift').value = bank.swift || '';
+      $('payBankAddr').value = bank.address || '';
+      $('payIntermediary').value = bank.intermediaryBank || '';
+      $('payIntermediarySwift').value = bank.intermediarySwift || '';
+      $('payNotifyEmail').value = bank.notifyEmail || '';
+    }
+    function savePayment() {
+      const methods = $('payMethods').value.split('\n').map(s => {
+        const parts = s.split('|').map(x => x.trim());
+        return { name: parts[0] || '', note: parts[1] || '', tag: parts[2] || '' };
+      }).filter(m => m.name);
+      if (!methods.length) { $('payMsg').style.color = '#A32D2D'; $('payMsg').textContent = '请至少填写一种收款方式'; return; }
+      saveSiteContent({ company: {
+        paymentVisible: $('payVisible').checked,
+        paymentMethods: methods,
+        bankInfo: {
+          beneficiary: $('payBeneficiary').value.trim(),
+          bank: $('payBank').value.trim(),
+          account: $('payAccount').value.trim(),
+          swift: $('paySwift').value.trim(),
+          address: $('payBankAddr').value.trim(),
+          intermediaryBank: $('payIntermediary').value.trim(),
+          intermediarySwift: $('payIntermediarySwift').value.trim(),
+          notifyEmail: $('payNotifyEmail').value.trim()
+        }
+      }});
+      $('payMsg').style.color = '#0F6E56';
+      $('payMsg').textContent = '保存成功，前台收款信息已更新' + ($('payVisible').checked ? '' : '（已隐藏）');
+    }
+    function restoreDefaultPayment() {
+      const def = DEFAULT_SITE_CONTENT.company;
+      $('payVisible').checked = def.paymentVisible !== false;
+      $('payMethods').value = (def.paymentMethods || []).map(m => [m.name || '', m.note || '', m.tag || ''].join(' | ')).join('\n');
+      const b = def.bankInfo || {};
+      $('payBeneficiary').value = b.beneficiary || '';
+      $('payBank').value = b.bank || '';
+      $('payAccount').value = b.account || '';
+      $('paySwift').value = b.swift || '';
+      $('payBankAddr').value = b.address || '';
+      $('payIntermediary').value = b.intermediaryBank || '';
+      $('payIntermediarySwift').value = b.intermediarySwift || '';
+      $('payNotifyEmail').value = b.notifyEmail || '';
+      $('payMsg').style.color = '#0F6E56';
+      $('payMsg').textContent = '已恢复默认收款信息，记得点「保存支付设置」生效。';
+    }
+
+    // ---------- 内容管理（全站图片与文字） ----------
+    // 字段配置：{ key, label, type }，type: 'text'|'textarea'|'image'
+    // 每个 tab 对应一个区块（home/about/contact/faq/company）
+    const CM_TABS = [
+      { id:'home', name:'首页', fields:[
+        {key:'heroImg', label:'Hero 主视觉大图', type:'image'},
+        {key:'heroImages', label:'主页大图轮播（多张，每行一个图片路径）', type:'images'},
+        {key:'eyebrow', label:'眉题（顶部小字）'},
+        {key:'title1', label:'主标题前半段'},
+        {key:'title2', label:'主标题后半段（金色加粗）'},
+        {key:'lead', label:'引导语', type:'textarea'},
+        {key:'tag1', label:'卖点1（加粗词|说明）'},
+        {key:'tag2', label:'卖点2'},
+        {key:'tag3', label:'卖点3'},
+        {key:'tag4', label:'卖点4'},
+        {key:'btn1', label:'按钮1文字'},
+        {key:'btn2', label:'按钮2文字'},
+        {key:'perk1T', label:'卖点条1·标题'}, {key:'perk1D', label:'卖点条1·说明'},
+        {key:'perk2T', label:'卖点条2·标题'}, {key:'perk2D', label:'卖点条2·说明'},
+        {key:'perk3T', label:'卖点条3·标题'}, {key:'perk3D', label:'卖点条3·说明'},
+        {key:'perk4T', label:'卖点条4·标题'}, {key:'perk4D', label:'卖点条4·说明'},
+        {key:'catEyebrow', label:'分类区眉题'}, {key:'catTitle', label:'分类区标题'},
+        {key:'catDesc', label:'分类区描述', type:'textarea'},
+        {key:'hotEyebrow', label:'热销区眉题'}, {key:'hotTitle', label:'热销区标题'},
+        {key:'hotDesc', label:'热销区描述', type:'textarea'},
+        {key:'aboutImg', label:'关于预览图片', type:'image'},
+        {key:'aboutEyebrow', label:'关于预览眉题'}, {key:'aboutTitle', label:'关于预览标题'},
+        {key:'aboutDesc', label:'关于预览描述', type:'textarea'},
+        {key:'aboutLi1', label:'关于预览列表1'}, {key:'aboutLi2', label:'关于预览列表2'}, {key:'aboutLi3', label:'关于预览列表3'},
+        {key:'aboutBtn', label:'关于预览按钮'},
+        {key:'stat1N', label:'数据1·数字'}, {key:'stat1L', label:'数据1·标签'},
+        {key:'stat2N', label:'数据2·数字'}, {key:'stat2L', label:'数据2·标签'},
+        {key:'stat3N', label:'数据3·数字'}, {key:'stat3L', label:'数据3·标签'},
+        {key:'stat4N', label:'数据4·数字'}, {key:'stat4L', label:'数据4·标签'},
+        {key:'whyEyebrow', label:'为什么选我们·眉题'}, {key:'whyTitle', label:'为什么选我们·标题'},
+        {key:'why1T', label:'优势1·标题'}, {key:'why1D', label:'优势1·说明', type:'textarea'},
+        {key:'why2T', label:'优势2·标题'}, {key:'why2D', label:'优势2·说明', type:'textarea'},
+        {key:'why3T', label:'优势3·标题'}, {key:'why3D', label:'优势3·说明', type:'textarea'},
+        {key:'why4T', label:'优势4·标题'}, {key:'why4D', label:'优势4·说明', type:'textarea'}
+      ]},
+      { id:'about', name:'关于我们', fields:[
+        {key:'crumb', label:'面包屑'}, {key:'title', label:'页头标题'}, {key:'subtitle', label:'页头副标题'},
+        {key:'img', label:'关于页主图', type:'image'}, {key:'founded', label:'成立年份'},
+        {key:'eyebrow', label:'眉题'}, {key:'heading', label:'标题'},
+        {key:'p1', label:'正文第一段', type:'textarea'},
+        {key:'p2', label:'正文第二段', type:'textarea'},
+        {key:'p3', label:'正文第三段', type:'textarea'},
+        {key:'ctaBtn', label:'按钮文字'},
+        {key:'stat1N', label:'数据1·数字'}, {key:'stat1L', label:'数据1·标签'},
+        {key:'stat2N', label:'数据2·数字'}, {key:'stat2L', label:'数据2·标签'},
+        {key:'stat3N', label:'数据3·数字'}, {key:'stat3L', label:'数据3·标签'},
+        {key:'stat4N', label:'数据4·数字'}, {key:'stat4L', label:'数据4·标签'},
+        {key:'mileEyebrow', label:'里程碑·眉题'}, {key:'mileTitle', label:'里程碑·标题'},
+        {key:'m1Y', label:'里程碑1·年份'}, {key:'m1T', label:'里程碑1·标题'}, {key:'m1D', label:'里程碑1·说明', type:'textarea'},
+        {key:'m2Y', label:'里程碑2·年份'}, {key:'m2T', label:'里程碑2·标题'}, {key:'m2D', label:'里程碑2·说明', type:'textarea'},
+        {key:'m3Y', label:'里程碑3·年份'}, {key:'m3T', label:'里程碑3·标题'}, {key:'m3D', label:'里程碑3·说明', type:'textarea'},
+        {key:'m4Y', label:'里程碑4·年份'}, {key:'m4T', label:'里程碑4·标题'}, {key:'m4D', label:'里程碑4·说明', type:'textarea'},
+        {key:'strEyebrow', label:'优势·眉题'}, {key:'strTitle', label:'优势·标题'},
+        {key:'s1T', label:'优势1·标题'}, {key:'s1D', label:'优势1·说明', type:'textarea'},
+        {key:'s2T', label:'优势2·标题'}, {key:'s2D', label:'优势2·说明', type:'textarea'},
+        {key:'s3T', label:'优势3·标题'}, {key:'s3D', label:'优势3·说明', type:'textarea'},
+        {key:'s4T', label:'优势4·标题'}, {key:'s4D', label:'优势4·说明', type:'textarea'},
+        {key:'exEyebrow', label:'展会·眉题'}, {key:'exTitle', label:'展会·标题'}, {key:'exDesc', label:'展会·说明', type:'textarea'},
+        {key:'exhibition', label:'展会图片（每行一个图片路径）', type:'images'}
+      ]},
+      { id:'contact', name:'联系我们', fields:[
+        {key:'crumb', label:'面包屑'}, {key:'title', label:'页头标题'}, {key:'subtitle', label:'页头副标题'},
+        {key:'eyebrow', label:'眉题'}, {key:'heading', label:'标题'},
+        {key:'emailLabel', label:'邮箱标签'}, {key:'phoneLabel', label:'电话标签'}, {key:'addrLabel', label:'地址标签'},
+        {key:'waBtn', label:'WhatsApp 按钮文字'},
+        {key:'formTitle', label:'表单标题'}, {key:'formSub', label:'表单副标题'},
+        {key:'sendBtn', label:'发送按钮文字'}
+      ]},
+      { id:'faq', name:'常见问题', fields:[
+        {key:'crumb', label:'面包屑'}, {key:'title', label:'页头标题'}, {key:'subtitle', label:'页头副标题'},
+        {key:'q1', label:'问题1', type:'textarea'}, {key:'a1', label:'回答1', type:'textarea'},
+        {key:'q2', label:'问题2', type:'textarea'}, {key:'a2', label:'回答2', type:'textarea'},
+        {key:'q3', label:'问题3', type:'textarea'}, {key:'a3', label:'回答3', type:'textarea'},
+        {key:'q4', label:'问题4', type:'textarea'}, {key:'a4', label:'回答4', type:'textarea'},
+        {key:'q5', label:'问题5', type:'textarea'}, {key:'a5', label:'回答5', type:'textarea'},
+        {key:'q6', label:'问题6', type:'textarea'}, {key:'a6', label:'回答6', type:'textarea'},
+        {key:'q7', label:'问题7', type:'textarea'}, {key:'a7', label:'回答7', type:'textarea'},
+        {key:'q8', label:'问题8', type:'textarea'}, {key:'a8', label:'回答8', type:'textarea'},
+        {key:'bottomEyebrow', label:'底部眉题'}, {key:'bottomTitle', label:'底部标题'}, {key:'bottomBtn', label:'底部按钮'}
+      ]},
+      { id:'company', name:'公司信息', fields:[
+        {key:'logoText', label:'Logo 主文字'}, {key:'logoSub', label:'Logo 副文字'},
+        {key:'ctaTitle', label:'页脚横幅标题'}, {key:'ctaDesc', label:'页脚横幅说明'}, {key:'ctaBtn', label:'页脚横幅按钮'},
+        {key:'footerDesc', label:'页脚公司简介', type:'textarea'},
+        {key:'copyright', label:'版权文字'},
+        {key:'instagram', label:'Instagram 链接（留空则不显示）'},
+        {key:'facebook', label:'Facebook 链接（留空则不显示）'},
+        {key:'tiktok', label:'TikTok 链接（留空则不显示）'},
+        {key:'paymentVisible', label:'在网站展示收款信息（联系页/详情页/发票页）', type:'switch'},
+        {key:'paymentMethods', label:'收款方式列表（每行一个：名称 | 说明 | 标签；标签可留空）', type:'paymethods'},
+        {key:'bankInfo.beneficiary', label:'银行收款·受益人名称'},
+        {key:'bankInfo.bank', label:'银行收款·开户银行'},
+        {key:'bankInfo.account', label:'银行收款·账号'},
+        {key:'bankInfo.swift', label:'银行收款·SWIFT Code'},
+        {key:'bankInfo.address', label:'银行收款·银行地址'}
+      ]},
+      { id:'popup', name:'首页弹窗', fields:[
+        {key:'enabled', label:'是否启用弹窗', type:'switch'},
+        {key:'showOnce', label:'每个访客只弹一次', type:'switch'},
+        {key:'delay', label:'弹出延迟（毫秒，1500≈1.5秒）'},
+        {key:'image', label:'弹窗图片（可留空，纯文字样式）', type:'image'},
+        {key:'badge', label:'顶部小标签（如 Holiday Special）'},
+        {key:'title', label:'大标题'},
+        {key:'subtitle', label:'副标题/活动说明', type:'textarea'},
+        {key:'btnText', label:'按钮文字（留空则不显示按钮）'},
+        {key:'btnLink', label:'按钮跳转链接（如 contact.html）'},
+        {key:'footerNote', label:'底部小字（如 限时优惠）'}
+      ]}
+    ];
+
+    let cmCurTab = 'home';
+    function renderHomepage() {
+      // tab 按钮
+      $('cmTabs').innerHTML = CM_TABS.map(t =>
+        `<a class="${t.id===cmCurTab?'active':''}" onclick="cmSwitch('${t.id}')">${t.name}</a>`).join('');
+      cmRenderFields();
+    }
+    function cmSwitch(id) { cmCurTab = id; renderHomepage(); }
+    // 按点号路径取值（如 "bankInfo.bank" → c.bankInfo.bank）
+    function cmGetPath(obj, path) {
+      return path.split('.').reduce((o, k) => (o == null ? o : o[k]), obj);
+    }
+    function cmRenderFields() {
+      const tab = CM_TABS.find(t => t.id === cmCurTab);
+      $('cmTabHint').textContent = '当前编辑：' + tab.name;
+      const c = getSiteContent()[tab.id] || {};
+      $('cmBody').innerHTML = tab.fields.map(f => {
+        const val = (cmGetPath(c, f.key) != null) ? cmGetPath(c, f.key) : '';
+        const valEsc = escAttr(val);
+        if (f.type === 'textarea') {
+          return `<div class="field"><label>${f.label}</label><textarea data-cm="${f.key}" style="min-height:64px">${esc(val)}</textarea></div>`;
+        } else if (f.type === 'paymethods') {
+          // 收款方式：数组对象 → 每行 "名称 | 说明 | 标签"
+          const arr = Array.isArray(val) ? val : [];
+          const txt = arr.map(m => {
+            const name = m.name || '';
+            const note = m.note || '';
+            const tag = m.tag || '';
+            return [name, note, tag].join(' | ');
+          }).join('\n');
+          return `<div class="field"><label>${f.label}</label><textarea data-cm="${f.key}" data-cmpay="1" style="min-height:110px" placeholder="T/T Bank Transfer | Recommended for bulk orders | Recommended">${esc(txt)}</textarea></div>`;
+        } else if (f.type === 'images') {
+          // 多图字段：数组值用换行展示
+          const arrVal = Array.isArray(val) ? val.join('\n') : (val || '');
+          return `<div class="field"><label>${f.label}</label><textarea data-cm="${f.key}" data-cmimages="1" style="min-height:80px" placeholder="每行一个图片路径">${esc(arrVal)}</textarea></div>`;
+        } else if (f.type === 'switch') {
+          const on = (val === true || val === 'true' || val === 1 || val === '1' || val === 'on');
+          return `<div class="field switch-field"><label>${f.label}</label>
+            <label class="switch"><input type="checkbox" data-cm="${f.key}" data-cmswitch="1" ${on?'checked':''}><span class="slider"></span></label>
+          </div>`;
+        } else if (f.type === 'image') {
+          return `<div class="field"><label>${f.label}</label>
+            <div class="img-pick" data-cmpick="${f.key}"></div>
+            <input data-cm="${f.key}" data-cmimg="1" placeholder="图片 URL 或文件名（如 assets/img/factory.jpg 或 https://...）" value="${valEsc}">
+          </div>`;
+        } else {
+          return `<div class="field"><label>${f.label}</label><input data-cm="${f.key}" value="${valEsc}"></div>`;
+        }
+      }).join('');
+      // 渲染图片选择器
+      $('cmBody').querySelectorAll('[data-cmpick]').forEach(box => {
+        const key = box.getAttribute('data-cmpick');
+        const cur = c[key] || '';
+        box.innerHTML = IMG_LIST.map(f => {
+          const full = IMG + f;
+          return `<label><input type="radio" name="cmpick_${key}" value="${full}" ${cur===full?'checked':''}><img src="${full}" alt="${f}"></label>`;
+        }).join('');
+        // 点选图库时同步到输入框
+        box.querySelectorAll('input').forEach(r => r.addEventListener('change', () => {
+          const inp = $('cmBody').querySelector(`input[data-cm="${key}"]`);
+          if (inp && r.checked) inp.value = r.value;
+        }));
+      });
+    }
+    function saveContent() {
+      const tab = CM_TABS.find(t => t.id === cmCurTab);
+      const obj = {};
+      // 按点号路径写入（如 "bankInfo.bank" → obj.bankInfo.bank）
+      function cmSetPath(root, path, val) {
+        const keys = path.split('.');
+        let o = root;
+        for (let i = 0; i < keys.length - 1; i++) {
+          if (o[keys[i]] == null || typeof o[keys[i]] !== 'object') o[keys[i]] = {};
+          o = o[keys[i]];
+        }
+        o[keys[keys.length - 1]] = val;
+      }
+      $('cmBody').querySelectorAll('[data-cm]').forEach(el => {
+        const key = el.getAttribute('data-cm');
+        let val;
+        if (el.hasAttribute('data-cmswitch')) {
+          val = el.checked;                        // 开关字段存布尔值
+        } else if (el.hasAttribute('data-cmpay')) {
+          // 收款方式：每行 "名称 | 说明 | 标签" → 对象数组
+          val = el.value.split('\n').map(s => {
+            const parts = s.split('|').map(x => x.trim());
+            return { name: parts[0] || '', note: parts[1] || '', tag: parts[2] || '' };
+          }).filter(m => m.name);
+        } else if (el.hasAttribute('data-cmimages')) {
+          val = el.value.split('\n').map(s=>s.trim()).filter(Boolean);  // 多图字段存数组
+        } else {
+          val = el.value.trim();
+        }
+        cmSetPath(obj, key, val);
+      });
+      // 图片字段：若输入框为空则回退图库选中
+      tab.fields.filter(f => f.type === 'image').forEach(f => {
+        if (!cmGetPath(obj, f.key)) {
+          const r = $('cmBody').querySelector(`input[name="cmpick_${f.key}"]:checked`);
+          if (r) cmSetPath(obj, f.key, r.value);
+        }
+      });
+      const wrap = {};
+      wrap[tab.id] = obj;
+      saveSiteContent(wrap);
+      $('cmMsg').style.color = '#0F6E56';
+      $('cmMsg').textContent = '保存成功，前台' + tab.name + '页面已更新。';
+    }
+    function resetContent() {
+      const tab = CM_TABS.find(t => t.id === cmCurTab);
+      if (!confirm('恢复「' + tab.name + '」为默认内容和图片？')) return;
+      const wrap = {};
+      wrap[tab.id] = JSON.parse(JSON.stringify(DEFAULT_SITE_CONTENT[tab.id]));
+      saveSiteContent(wrap);
+      $('cmMsg').style.color = '#0F6E56';
+      $('cmMsg').textContent = '已恢复「' + tab.name + '」默认。';
+      cmRenderFields();
+    }
+
+    // ---------- 设置 ----------
+    function changePassword() {
+      const oldP = $('oldPass').value, newP = $('newPass').value, cf = $('confirmPass').value;
+      const msg = $('setMsg');
+      if (oldP !== getAdminCred().pass) { msg.style.color='#A32D2D'; msg.textContent='当前密码错误'; return; }
+      if (newP.length < 4) { msg.style.color='#A32D2D'; msg.textContent='新密码至少 4 位'; return; }
+      if (newP !== cf) { msg.style.color='#A32D2D'; msg.textContent='两次输入的新密码不一致'; return; }
+      setAdminCred(getAdminCred().user, newP);
+      msg.style.color='#0F6E56'; msg.textContent='密码修改成功';
+      $('oldPass').value=$('newPass').value=$('confirmPass').value='';
+    }
+    function exportData() {
+      const blob = new Blob([JSON.stringify(loadCategories(), null, 2)], {type:'application/json'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = 'ruis-categories.json'; a.click(); URL.revokeObjectURL(a.href);
+    }
+    $('importFile').addEventListener('change', e => {
+      const f = e.target.files[0]; if (!f) return;
+      const r = new FileReader();
+      r.onload = () => {
+        try {
+          const arr = JSON.parse(r.result);
+          if (!Array.isArray(arr)) throw new Error();
+          saveCategories(arr); refreshAll(); alert('导入成功，共 ' + arr.length + ' 个品类');
+        } catch(err) { alert('文件格式错误'); }
+      };
+      r.readAsText(f); e.target.value = '';
+    });
+    function resetProductsData() {
+      if (!confirm('恢复为初始品类数据？当前所有品类改动将丢失。')) return;
+      saveCategories(JSON.parse(JSON.stringify(DEFAULT_CATEGORIES)));
+      refreshAll(); alert('已恢复初始数据');
+    }
+
+    // ---------- 工具 ----------
+    function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+    function escAttr(s){ return esc(s).replace(/'/g,'&#39;'); }
+    function fmtTime(t){ if(!t) return '-'; const d=new Date(t); return isNaN(d)?'-':d.toLocaleString('zh-CN',{hour12:false}); }
+
+    checkAuth();
+  </script>
+</body>
+</html>

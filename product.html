@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Detail - Ruis Hair</title>
+  <meta name="description" content="Ruis Hair premium virgin Remy hair extension — 40+ colors, 7 lengths.">
+  <link rel="canonical" href="https://ruishairfactory.com/product.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Product Detail - Ruis Hair">
+  <meta property="og:description" content="Ruis Hair premium virgin Remy hair extension — 40+ colors, 7 lengths.">
+  <meta property="og:url" content="https://ruishairfactory.com/product.html">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="products">
+
+  <div class="page-hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Home</a><span>/</span><a href="products.html">Products</a><span>/</span><span id="crumbCat">Product</span></div>
+    <h1 id="pageTitle">Product Detail</h1>
+  </div></div>
+
+  <section class="section">
+    <div class="wrap pd-layout" id="pdLayout">
+      <div class="pd-gallery pd-gallery-v2">
+        <div class="pd-mainimg"><img id="pdMain" src="" alt=""></div>
+      </div>
+      <div class="pd-info">
+        <span class="eyebrow" id="pdCat"></span>
+        <h1 id="pdName"></h1>
+        <div class="pd-price"><span id="pdPrice"></span> <small id="pdPriceNote">/ 100g · factory price</small></div>
+        <a class="pd-deal" id="pdDeal" href="#" target="_blank">💬 Contact us on WhatsApp for a better price →</a>
+        <p class="pd-desc" id="pdDesc"></p>
+
+        <div class="pd-opt">
+          <div class="lbl">Color: <span class="muted" id="colorLabel" style="font-weight:600"></span></div>
+        </div>
+        <div class="pd-opt">
+          <div class="lbl">Length</div>
+          <div class="opt-pills" id="lenPills"></div>
+        </div>
+        <div class="qty-row">
+          <div class="qty"><button id="qtyMinus">−</button><input id="qtyInput" type="number" value="1" min="1"><button id="qtyPlus">+</button></div>
+          <span class="muted" style="font-size:13px">Minimum order: 100g</span>
+        </div>
+        <div class="pd-actions">
+          <button class="btn btn-gold" id="addBtn">Add to Cart</button>
+          <a class="btn btn-dark" id="waBtn" href="#" target="_blank">Inquire on WhatsApp</a>
+        </div>
+        <div class="pd-meta">
+          <div>✓ 100% cuticle-aligned virgin Remy hair</div>
+          <div>✓ Ships within 48 hours (Mon–Fri)</div>
+          <div>✓ Custom colors & packaging available</div>
+        </div>
+        <div class="pd-pay" id="pdPay">
+          <div class="pd-pay-title">💳 Payment Methods</div>
+          <div class="pd-pay-tags" id="pdPayTags"></div>
+          <p class="pd-pay-note">Bulk orders: T/T bank transfer recommended (30% deposit + 70% before shipment) to avoid chargeback risk. <a href="invoice.html" class="pd-pay-link">Generate Proforma Invoice →</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="pd-tabs">
+        <div class="tab-heads">
+          <button class="active" data-tab="desc">Description</button>
+          <button data-tab="colors">All Colors</button>
+          <button data-tab="ship">Shipping & Returns</button>
+        </div>
+        <div class="tab-pane active" id="tab-desc"><p id="tabDescText"></p></div>
+        <div class="tab-pane" id="tab-colors"><div class="color-grid" id="tabColorGrid"></div></div>
+        <div class="tab-pane" id="tab-ship">
+          <p>Your order will ship within 48 hours, Monday through Friday. Delivery time varies by destination. We accept returns and exchanges on unused, unopened items within 7 days of delivery. Contact us for a return authorization before sending anything back.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--cream)"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">You May Also Like</span><h2 class="h2">Related Categories</h2></div><a class="link-all" href="products.html">View all →</a></div>
+    <div class="products-grid" id="relatedGrid"></div>
+  </div></section>
+
+  <!-- 随机颜色推荐 -->
+  <section class="section-sm" id="colorRecSec">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Popular Colors</span><h2 class="h2">You Might Like These Colors</h2></div></div>
+      <div class="color-rec-grid" id="colorRecGrid"></div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/cloud-config.js"></script>
+  <script src="assets/js/cloud-data.js"></script>
+  <script src="assets/js/cloud-sync.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    const initColor = params.get('color');
+    const c = getCategory(id) || CATEGORIES[0];
+    const colors = c.colors || [];
+    // 支持从列表页按颜色直达：优先定位到 URL 里指定的颜色
+    let selColor = (initColor && colors.find(x => x.name === initColor)) || colors[0] || null;
+    let selLen = 16;
+
+    document.getElementById('crumbCat').textContent = c.name;
+    document.getElementById('pageTitle').textContent = c.name;
+    document.title = c.name + ' - Ruis Hair';
+    document.getElementById('pdCat').textContent = c.sub || '';
+    document.getElementById('pdName').textContent = c.name;
+    document.getElementById('pdDesc').textContent = c.desc || '';
+    document.getElementById('tabDescText').textContent = c.desc || '';
+    document.getElementById('waBtn').href = `https://wa.me/${pickWhatsApp()}?text=` + encodeURIComponent('Hi Ruis Hair, I am interested in: ' + c.name);
+    // 价格下方「联系客服得优惠」：随机分配业务员，并附带当前颜色/尺寸询价
+    function setDealLink() {
+      const deal = document.getElementById('pdDeal');
+      if (!deal) return;
+      const colorTxt = selColor ? selColor.name : '';
+      const msg = 'Hi Ruis Hair, I would like a better price for: ' + c.name + (colorTxt ? ' (color ' + colorTxt + ')' : '') + ' at ' + SIZE_LABELS[selLen] + ' length.';
+      deal.href = 'https://wa.me/' + pickWhatsApp() + '?text=' + encodeURIComponent(msg);
+    }
+
+    // 价格展示
+    function currentPrice() {
+      if (!selColor) return 0;
+      return Number(selColor.prices && selColor.prices[selLen] != null ? selColor.prices[selLen] : 0) || 0;
+    }
+    function updatePrice() {
+      document.getElementById('pdPrice').textContent = money(currentPrice());
+      document.getElementById('pdPriceNote').textContent = `/ 100g · ${SIZE_LABELS[selLen]} length`;
+      setDealLink();
+    }
+
+    // 主图
+    const main = document.getElementById('pdMain');
+    function setMainColor(color) {
+      selColor = color;
+      main.src = color.img;
+      document.getElementById('colorLabel').textContent = color.name;
+      document.querySelectorAll('#tabColorGrid .cg-item').forEach(x => x.classList.toggle('active', x.dataset.name === color.name));
+      updatePrice();
+    }
+
+    // 颜色网格（缩略图）
+    function renderColorGrid(container) {
+      container.innerHTML = colors.map(color => `
+        <div class="cg-item ${selColor && color.name===selColor.name?'active':''}" data-name="${color.name}" onclick="pickColor('${color.name}')" title="${color.name}">
+          <img src="${color.img}" alt="${color.name}" loading="lazy">
+          <span>${color.name}</span>
+        </div>`).join('');
+    }
+    function pickColor(name) {
+      const color = colors.find(x => x.name === name);
+      if (color) setMainColor(color);
+    }
+
+    renderColorGrid(document.getElementById('tabColorGrid'));
+
+    // 主图初始
+    if (selColor) { main.src = selColor.img; document.getElementById('colorLabel').textContent = selColor.name; }
+
+    // 尺寸
+    document.getElementById('lenPills').innerHTML = SIZES.map((s,i)=>
+      `<div class="pill ${s===selLen?'active':''}" onclick="pickLen(${s}, this)">${SIZE_LABELS[s]}</div>`).join('');
+    function pickLen(s, el) {
+      selLen = s;
+      document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+      if (el) el.classList.add('active');
+      updatePrice();
+    }
+    updatePrice();
+
+    // 数量
+    const qi = document.getElementById('qtyInput');
+    document.getElementById('qtyMinus').onclick = ()=>{ qi.value = Math.max(1, +qi.value - 1); };
+    document.getElementById('qtyPlus').onclick = ()=>{ qi.value = +qi.value + 1; };
+
+    // 加购
+    document.getElementById('addBtn').onclick = ()=> addToCart(c.id, {color: selColor ? selColor.name : '', len: SIZE_LABELS[selLen], price: currentPrice(), qty:+qi.value||1});
+
+    // 标签页
+    document.querySelectorAll('.tab-heads button').forEach(b=>{
+      b.onclick = ()=>{
+        document.querySelectorAll('.tab-heads button').forEach(x=>x.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        document.getElementById('tab-'+b.dataset.tab).classList.add('active');
+      };
+    });
+
+    // 相关品类
+    document.getElementById('relatedGrid').innerHTML = CATEGORIES.filter(x=>x.id!==c.id).slice(0,4).map(productCard).join('');
+
+    // 收款方式标签
+    (function renderPay(){
+      const box = document.getElementById('pdPay');
+      const tags = document.getElementById('pdPayTags');
+      if (!box) return;
+      const pay = getPaymentInfo();
+      if (!pay.visible) { box.style.display = 'none'; return; }
+      if (tags) tags.innerHTML = (pay.methods || []).map(m => {
+        const msg = 'Hi Ruis Hair, I would like to pay by ' + m.name + '. Please send me the payment details.';
+        const wa = 'https://wa.me/' + pickWhatsApp() + '?text=' + encodeURIComponent(msg);
+        return `<a class="pd-pay-tag" href="${wa}" target="_blank" rel="noopener">${m.name}</a>`;
+      }).join('');
+    })();
+
+    // 随机 3 个颜色推荐（当前品类，随机抽取）
+    (function renderColorRec() {
+      const grid = document.getElementById('colorRecGrid');
+      const sec = document.getElementById('colorRecSec');
+      if (!grid || !colors.length) { if (sec) sec.style.display = 'none'; return; }
+      // 随机抽取 3 个（不足 3 个则全部）
+      const pool = colors.slice();
+      const recs = [];
+      while (pool.length && recs.length < 3) {
+        recs.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+      }
+      grid.innerHTML = recs.map(color => {
+        const price16 = color.prices && color.prices[16] != null ? money(color.prices[16]) : '';
+        return `<div class="color-rec-card" onclick="pickColor('${color.name}')" style="cursor:pointer">
+          <img src="${color.img}" alt="${color.name}" loading="lazy">
+          <div class="cr-info">
+            <div class="cr-name">${color.name}</div>
+            <div class="cr-price">${price16} <small>/ 100g</small></div>
+          </div>
+        </div>`;
+      }).join('');
+    })();
+  </script>
+</body>
+</html>

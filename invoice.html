@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proforma Invoice - Ruis Hair</title>
+  <meta name="description" content="Generate a proforma invoice for your Ruis Hair order. Includes T/T bank details, payment terms and shipping information.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .inv-toolbar { display: flex; gap: 12px; justify-content: flex-end; margin-bottom: 18px; flex-wrap: wrap; }
+    .inv-sheet { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 48px; }
+    .inv-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); padding-bottom: 24px; margin-bottom: 28px; }
+    .inv-brand { font-size: 26px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
+    .inv-brand small { display: block; font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+    .inv-title { text-align: right; }
+    .inv-title h1 { font-size: 28px; font-weight: 800; color: var(--gold); letter-spacing: .02em; }
+    .inv-title .inv-no { font-size: 13px; color: var(--muted); margin-top: 6px; }
+    .inv-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 28px; }
+    .inv-block h4 { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .inv-block p { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+    .inv-block .lbl { font-weight: 700; color: var(--ink); }
+    .inv-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    .inv-table th { background: var(--cream); text-align: left; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); padding: 12px 14px; border-bottom: 2px solid var(--line); }
+    .inv-table td { padding: 12px 14px; font-size: 14px; color: var(--ink); border-bottom: 1px solid var(--line); vertical-align: top; }
+    .inv-table td input, .inv-table td textarea { width: 100%; border: 1px solid transparent; background: transparent; font-size: 14px; color: var(--ink); padding: 6px 8px; border-radius: 6px; font-family: inherit; }
+    .inv-table td input:focus, .inv-table td textarea:focus { border-color: var(--gold); background: #fff; outline: none; }
+    .inv-table td.num { text-align: right; }
+    .inv-table td.num input { text-align: right; }
+    .inv-totals { margin-left: auto; max-width: 360px; }
+    .inv-totals .row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; color: var(--ink-2); }
+    .inv-totals .row.grand { border-top: 2px solid var(--ink); margin-top: 6px; padding-top: 14px; font-size: 18px; font-weight: 800; color: var(--gold); }
+    .inv-totals .row input { width: 120px; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; font-size: 14px; text-align: right; font-family: inherit; color: var(--ink); }
+    .inv-bank { background: var(--cream); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; margin-top: 24px; }
+    .inv-bank h4 { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .inv-bank table { width: 100%; border-collapse: collapse; }
+    .inv-bank td { padding: 6px 0; font-size: 14px; color: var(--ink-2); }
+    .inv-bank td:first-child { width: 160px; color: var(--muted); font-size: 13px; }
+    .inv-note { margin-top: 22px; font-size: 13px; color: var(--muted); line-height: 1.8; }
+    .inv-note b { color: var(--ink); }
+    .inv-terms { margin-top: 24px; font-size: 13px; color: var(--ink-2); line-height: 1.9; }
+    .inv-terms h4 { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .inv-terms ol { padding-left: 20px; }
+    .inv-terms li { margin-bottom: 4px; }
+    @media (max-width: 720px) {
+      .inv-sheet { padding: 24px 18px; }
+      .inv-cols { grid-template-columns: 1fr; }
+      .inv-head { flex-direction: column; }
+      .inv-title { text-align: left; }
+    }
+    @media print {
+      .inv-toolbar, header, .wa-float, .social-float, footer, .chat-widget { display: none !important; }
+      .inv-sheet { box-shadow: none; border: none; padding: 0; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body data-page="invoice">
+
+  <div class="page-hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Home</a><span>/</span><span>Proforma Invoice</span></div>
+    <h1>Proforma Invoice</h1>
+    <p class="muted">Fill in the details, then print or save as PDF to send to your customer.</p>
+  </div></div>
+
+  <section class="section" style="padding-top:40px">
+    <div class="wrap">
+      <div class="inv-toolbar">
+        <button class="btn btn-dark" id="invPrintBtn">🖨 Print / Save PDF</button>
+        <button class="btn btn-gold" id="invWhatsAppBtn">💬 Send via WhatsApp</button>
+      </div>
+
+      <div class="inv-sheet" id="invSheet">
+        <div class="inv-head">
+          <div class="inv-brand">RUIS HAIR<small>Ruis Hair Products Co., Ltd · Since 2005</small><small id="invCoAddr"></small></div>
+          <div class="inv-title">
+            <h1>PROFORMA INVOICE</h1>
+            <div class="inv-no">Invoice No. <b id="invNo">PI-2026-0001</b></div>
+            <div class="inv-no">Date: <b id="invDate"></b></div>
+          </div>
+        </div>
+
+        <div class="inv-cols">
+          <div class="inv-block">
+            <h4>Bill To</h4>
+            <p><span class="lbl" id="invBillName" contenteditable="true">Customer Name</span><br>
+            <span id="invBillCo" contenteditable="true">Company Name</span><br>
+            <span id="invBillAddr" contenteditable="true">Customer Address</span><br>
+            <span id="invBillEmail" contenteditable="true">customer@email.com</span></p>
+          </div>
+          <div class="inv-block">
+            <h4>Ship To (if different)</h4>
+            <p><span id="invShipAddr" contenteditable="true">Shipping address (must match payment details)</span></p>
+          </div>
+        </div>
+
+        <table class="inv-table">
+          <thead>
+            <tr><th style="width:52px">#</th><th>Item / Description</th><th style="width:90px">Color</th><th style="width:90px">Length</th><th style="width:80px">Qty</th><th style="width:110px">Unit Price (USD)</th><th style="width:120px">Amount (USD)</th></tr>
+          </thead>
+          <tbody id="invRows"></tbody>
+        </table>
+        <button class="btn btn-outline" style="padding:8px 16px;font-size:13px" id="invAddRow">+ Add Row</button>
+
+        <div class="inv-totals">
+          <div class="row"><span>Subtotal</span><input id="invSubtotal" readonly placeholder="0.00"></div>
+          <div class="row"><span>Shipping / Freight</span><input id="invShipping" type="number" step="0.01" value="0" placeholder="0.00"></div>
+          <div class="row"><span>Other Charges</span><input id="invOther" type="number" step="0.01" value="0" placeholder="0.00"></div>
+          <div class="row grand"><span>Total</span><span id="invTotal">$0.00</span></div>
+        </div>
+
+        <div class="inv-bank">
+          <h4>Payment via T/T (Bank Transfer) — Recommended</h4>
+          <table>
+            <tr><td>Beneficiary</td><td id="invBankBeneficiary"></td></tr>
+            <tr><td>Bank Name</td><td id="invBankName"></td></tr>
+            <tr><td>Account No.</td><td id="invBankAccount"></td></tr>
+            <tr><td>SWIFT Code</td><td id="invBankSwift"></td></tr>
+            <tr><td>Bank Address</td><td id="invBankAddress"></td></tr>
+            <tr><td>Intermediary Bank</td><td id="invIntermediary"></td></tr>
+            <tr><td>Notify Email</td><td id="invNotifyEmail"></td></tr>
+          </table>
+          <p class="inv-bank-hint" id="invBankHint" style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.7"></p>
+        </div>
+
+        <div class="inv-note">
+          <b>Payment Terms:</b> 30% deposit to confirm the order, 70% balance before shipment. <br>
+          <b>Note:</b> Shipping address must match the payment details. For bulk orders we recommend T/T bank transfer to avoid chargeback risk.
+        </div>
+
+        <div class="inv-terms">
+          <h4>Terms & Conditions</h4>
+          <ol>
+            <li>Prices are per 100g bundle, FOB China, in USD.</li>
+            <li>Production time is 7–15 days after deposit confirmed, depending on order size.</li>
+            <li>Sample orders are available before bulk production.</li>
+            <li>Please confirm color and length before production; custom colors cannot be cancelled after production begins.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/cloud-config.js"></script>
+  <script src="assets/js/cloud-data.js"></script>
+  <script src="assets/js/cloud-sync.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    (function(){
+      const co = COMPANY;
+      const pay = getPaymentInfo();
+      const bank = pay.bank || {};
+      // 公司抬头与银行信息
+      document.getElementById('invCoAddr').textContent = co.address;
+      document.getElementById('invBankBeneficiary').textContent = bank.beneficiary || '';
+      document.getElementById('invBankName').textContent = bank.bank || '';
+      document.getElementById('invBankAccount').textContent = bank.account || '';
+      document.getElementById('invBankSwift').textContent = bank.swift || '';
+      document.getElementById('invBankAddress').textContent = bank.address || '';
+      // 中间行 + 通知邮箱
+      const intermediary = bank.intermediaryBank ? (bank.intermediaryBank + (bank.intermediarySwift ? ' (SWIFT: ' + bank.intermediarySwift + ')' : '')) : '';
+      document.getElementById('invIntermediary').textContent = intermediary;
+      document.getElementById('invNotifyEmail').textContent = bank.notifyEmail || '';
+      const hint = document.getElementById('invBankHint');
+      if (hint && bank.intermediarySwift) {
+        hint.textContent = 'Important: When remitting, please note "VIA ' + bank.intermediarySwift + '" in the remarks if there is no intermediary bank option on your online banking.';
+      }
+      // 日期与单号
+      const d = new Date();
+      document.getElementById('invDate').textContent = d.toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
+      const no = 'PI-' + d.getFullYear() + '-' + String(d.getMonth()*100 + d.getDate()).padStart(4,'0') + String(Math.floor(Math.random()*90+10));
+      document.getElementById('invNo').textContent = no;
+
+      // 明细行
+      const rows = document.getElementById('invRows');
+      function addRow(data){
+        data = data || {};
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="idx"></td>
+          <td><textarea rows="1" class="it-desc" placeholder="e.g. Genius Weft — 100g bundle">${esc(data.desc||'')}</textarea></td>
+          <td><input class="it-color" value="${esc(data.color||'')}" placeholder="#1"></td>
+          <td><input class="it-len" value="${esc(data.len||'')}" placeholder='16"'></td>
+          <td class="num"><input class="it-qty" type="number" min="1" step="1" value="${data.qty||1}"></td>
+          <td class="num"><input class="it-price" type="number" min="0" step="0.01" value="${data.price||''}" placeholder="0.00"></td>
+          <td class="num amount">$0.00</td>`;
+        tr.querySelectorAll('.it-qty,.it-price').forEach(inp => inp.addEventListener('input', recalc));
+        rows.appendChild(tr);
+        reindex(); recalc();
+      }
+      function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+      function reindex(){
+        rows.querySelectorAll('tr').forEach((tr,i)=> tr.querySelector('.idx').textContent = i+1);
+      }
+      function recalc(){
+        let subtotal = 0;
+        rows.querySelectorAll('tr').forEach(tr=>{
+          const qty = parseFloat(tr.querySelector('.it-qty').value) || 0;
+          const price = parseFloat(tr.querySelector('.it-price').value) || 0;
+          const amt = qty * price;
+          tr.querySelector('.amount').textContent = '$' + amt.toFixed(2);
+          subtotal += amt;
+        });
+        document.getElementById('invSubtotal').value = subtotal.toFixed(2);
+        const ship = parseFloat(document.getElementById('invShipping').value) || 0;
+        const other = parseFloat(document.getElementById('invOther').value) || 0;
+        const total = subtotal + ship + other;
+        document.getElementById('invTotal').textContent = '$' + total.toFixed(2);
+      }
+      document.getElementById('invShipping').addEventListener('input', recalc);
+      document.getElementById('invOther').addEventListener('input', recalc);
+      document.getElementById('invAddRow').addEventListener('click', ()=> addRow());
+
+      // 初始两行
+      addRow();
+      addRow();
+
+      // 打印
+      document.getElementById('invPrintBtn').addEventListener('click', ()=> window.print());
+
+      // 发送 WhatsApp
+      document.getElementById('invWhatsAppBtn').addEventListener('click', ()=>{
+        const total = document.getElementById('invTotal').textContent;
+        const msg = 'Hi, here is your proforma invoice ' + document.getElementById('invNo').textContent + ' — Total: ' + total + '. Please confirm to proceed with the deposit.';
+        window.open('https://wa.me/' + pickWhatsApp() + '?text=' + encodeURIComponent(msg), '_blank');
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Products - Ruis Hair | Virgin Remy Hair Extensions</title>
+  <meta name="description" content="Shop all Ruis Hair extensions: genius weft, machine weft, handtied, butterfly, flat weft, tape ins, keratin, clip ins, ponytails and halo.">
+  <link rel="canonical" href="https://ruishairfactory.com/products.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Products - Ruis Hair | Virgin Remy Hair Extensions">
+  <meta property="og:description" content="Shop all Ruis Hair extensions: genius weft, machine weft, handtied, butterfly, flat weft, tape ins, keratin, clip ins, ponytails and halo.">
+  <meta property="og:url" content="https://ruishairfactory.com/products.html">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="products">
+
+  <div class="page-hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Home</a><span>/</span>Products</div>
+    <h1>Our Products</h1>
+    <p class="muted">Explore our full range of 100% virgin Remy hair extensions.</p>
+  </div></div>
+
+  <!-- 细节展示：品类顶部滚动多图（跟随当前选中品类） -->
+  <section class="section-sm detail-strip-sec" id="catDetailStripSec">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Detail Gallery</span><h2 class="h2" id="catDetailTitle">Product Details</h2></div></div>
+      <div class="detail-strip" id="catDetailStrip"></div>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="wrap shop-layout">
+      <!-- 侧栏筛选 -->
+      <aside class="filter-box">
+        <h4>Product Categories</h4>
+        <ul class="cat-list" id="filterList"></ul>
+        <div style="margin-top:24px;border-top:1px solid var(--line);padding-top:20px">
+          <h4 style="margin-bottom:10px">Need help?</h4>
+          <p class="muted" style="font-size:12.5px;line-height:1.6">Chat with us on WhatsApp for prices, samples and custom colors.</p>
+          <a class="btn btn-gold btn-block" style="margin-top:12px" href="https://wa.me/8618127350913" target="_blank">Chat Now</a>
+        </div>
+      </aside>
+
+      <!-- 产品区 -->
+      <main>
+        <div class="shop-toolbar">
+          <div class="result" id="resultInfo">Showing all products</div>
+          <div class="toolbar-actions">
+            <form id="searchForm" class="search-form">
+              <input id="searchInput" type="search" placeholder="Search products..." value="">
+              <button class="btn btn-dark" type="submit">Search</button>
+            </form>
+            <select id="sortSel">
+              <option value="featured">Sort: Featured</option>
+              <option value="low">Price: Low to High</option>
+              <option value="high">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+        <div class="products-grid" id="productsGrid"></div>
+        <div id="noResult" style="display:none;text-align:center;padding:60px 20px;color:var(--muted)">No products found. Try another search or category.</div>
+      </main>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/cloud-config.js"></script>
+  <script src="assets/js/cloud-data.js"></script>
+  <script src="assets/js/cloud-sync.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    let activeCat = params.get('cat') || 'all';
+    const q = (params.get('q') || '').toLowerCase();
+    document.getElementById('searchInput').value = q;
+
+    // 所有「颜色商品」（品类 × 颜色 展开）
+    const allItems = allColorProducts();
+
+    // 细节展示：跟随当前选中品类（all 时显示第一个品类）
+    (function renderCatDetail() {
+      const sec = document.getElementById('catDetailStripSec');
+      const strip = document.getElementById('catDetailStrip');
+      const title = document.getElementById('catDetailTitle');
+      const cat = activeCat === 'all' ? CATEGORIES[0] : getCategory(activeCat);
+      if (!sec || !strip || !cat) { if (sec) sec.style.display = 'none'; return; }
+      const details = cat.details || [];
+      if (!details.length) { sec.style.display = 'none'; return; }
+      title.textContent = cat.name + ' Details';
+      strip.innerHTML = details.map(d => `<div class="ds-item"><img src="${d}" alt="detail" loading="lazy"></div>`).join('');
+      sec.style.display = 'block';
+    })();
+
+    // 筛选列表（品类，数量 = 该品类颜色数）
+    const list = [{id:'all',name:'All Categories'}, ...CATEGORIES];
+    document.getElementById('filterList').innerHTML = list.map(c => `
+      <li><a href="products.html?cat=${c.id}" class="${activeCat===c.id?'active':''}">${c.name}<span>${c.id==='all'?allItems.length:(getCategory(c.id)?.colors?.length||0)}</span></a></li>`).join('');
+
+    // 过滤 + 搜索（按颜色名/品类名）
+    let items = allItems.filter(p => (activeCat==='all' || p.catId===activeCat) && (!q || p.name.toLowerCase().includes(q) || p.catName.toLowerCase().includes(q)));
+    document.getElementById('resultInfo').textContent = `Showing ${items.length} product${items.length===1?'':'s'}${activeCat!=='all'?' in '+catName(activeCat):''}`;
+
+    function render(arr){
+      document.getElementById('productsGrid').innerHTML = arr.map(p => colorProductCard(p)).join('');
+      document.getElementById('noResult').style.display = arr.length ? 'none':'block';
+    }
+    render(items);
+
+    document.getElementById('sortSel').addEventListener('change', e => {
+      const v = e.target.value;
+      const sorted = [...items];
+      if(v==='low'||v==='high') sorted.sort((a,b)=> a.price - b.price);
+      if(v==='high') sorted.sort((a,b)=> b.price - a.price);
+      render(sorted);
+    });
+  </script>
+</body>
+</html>

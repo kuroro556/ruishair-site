@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ's - Ruis Hair</title>
+  <meta name="description" content="Frequently asked questions about Ruis Hair extensions — quality, MOQ, shipping, customization and care.">
+  <link rel="canonical" href="https://ruishairfactory.com/faq.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FAQ - Ruis Hair">
+  <meta property="og:description" content="Frequently asked questions about Ruis Hair extensions — quality, MOQ, shipping, customization and care.">
+  <meta property="og:url" content="https://ruishairfactory.com/faq.html">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="faq">
+
+  <div class="page-hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Home</a><span>/</span><span id="faqCrumb">FAQ's</span></div>
+    <h1 id="faqTitle">Frequently Asked Questions</h1>
+    <p class="muted" id="faqSubtitle">Everything you need to know before ordering.</p>
+  </div></div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="faq-list" id="faqList">
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--cream)"><div class="wrap center">
+    <span class="eyebrow" id="faqBottomEyebrow">Still have questions?</span>
+    <h2 class="h2" style="margin:10px 0 22px" id="faqBottomTitle">We're Happy To Help</h2>
+    <a class="btn btn-gold" href="contact.html" id="faqBottomBtn">Contact Us</a>
+  </div></section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/cloud-config.js"></script>
+  <script src="assets/js/cloud-data.js"></script>
+  <script src="assets/js/cloud-sync.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    (function renderFaq(){
+      var c = getSiteContent().faq;
+      document.getElementById('faqCrumb').textContent = c.crumb;
+      document.getElementById('faqTitle').textContent = c.title;
+      document.getElementById('faqSubtitle').textContent = c.subtitle;
+      document.getElementById('faqBottomEyebrow').textContent = c.bottomEyebrow;
+      document.getElementById('faqBottomTitle').textContent = c.bottomTitle;
+      document.getElementById('faqBottomBtn').textContent = c.bottomBtn;
+
+      // 问答列表（q1~q8 / a1~a8，留空的跳过）
+      var items = [];
+      for (var i = 1; i <= 8; i++) {
+        var q = c['q' + i], a = c['a' + i];
+        if (q && a) items.push({ q: q, a: a });
+      }
+      document.getElementById('faqList').innerHTML = items.map(function(it){
+        return '<div class="faq-item"><button class="faq-q">' + it.q + ' <span class="plus">+</span></button><div class="faq-a">' + it.a + '</div></div>';
+      }).join('');
+    })();
+
+    document.querySelectorAll('.faq-q').forEach(q=>{
+      q.addEventListener('click', ()=>{
+        const item = q.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));
+        if(!wasOpen) item.classList.add('open');
+      });
+    });
+  </script>
+</body>
+</html>

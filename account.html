@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Account - Ruis Hair</title>
+  <meta name="description" content="Manage your Ruis Hair account, view your profile and order history.">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="account">
+
+  <div class="page-hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Home</a><span>/</span><span>My Account</span></div>
+    <h1>My Account</h1>
+    <p class="muted">Manage your profile and view your orders.</p>
+  </div></div>
+
+  <section class="section">
+    <div class="wrap" style="max-width:860px">
+      <div id="accountGuest" style="display:none;text-align:center;padding:40px 20px">
+        <h2 class="h2">Please sign in</h2>
+        <p class="muted" style="margin:12px 0 24px">Sign in or create an account to view your profile and order history.</p>
+        <button class="btn btn-gold" onclick="openAccount('login')">Sign In</button>
+        <button class="btn btn-outline" style="margin-left:10px" onclick="openAccount('register')">Register</button>
+      </div>
+
+      <div id="accountMain">
+        <div class="form-card" style="background:#fff;border:1px solid var(--line)">
+          <div style="display:flex;gap:20px;align-items:center;margin-bottom:24px">
+            <div id="accAvatar" class="am-avatar" style="width:72px;height:72px;border-radius:50%"></div>
+            <div>
+              <h2 class="h2" id="accName" style="margin:0">—</h2>
+              <p class="muted" id="accEmail" style="margin:4px 0 0">—</p>
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label>Country</label><input id="accCountry" disabled></div>
+            <div class="field"><label>Phone</label><input id="accPhone" disabled></div>
+          </div>
+          <div class="field"><label>Address</label><input id="accAddress" disabled></div>
+          <div class="field"><label>Member since</label><input id="accCreated" disabled></div>
+          <button class="btn btn-dark" style="margin-top:8px" onclick="doLogout();location.reload()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/cloud-config.js"></script>
+  <script src="assets/js/cloud-data.js"></script>
+  <script src="assets/js/cloud-sync.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    (function render(){
+      const user = getCurrentUser();
+      if (!user) {
+        document.getElementById('accountGuest').style.display = 'block';
+        document.getElementById('accountMain').style.display = 'none';
+        return;
+      }
+      document.getElementById('accountGuest').style.display = 'none';
+      document.getElementById('accountMain').style.display = 'block';
+      document.getElementById('accName').textContent = user.name || '';
+      document.getElementById('accEmail').textContent = user.email || '';
+      document.getElementById('accCountry').value = user.country || '';
+      document.getElementById('accPhone').value = user.phone || '';
+      document.getElementById('accAddress').value = user.address || '';
+      document.getElementById('accCreated').value = user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '';
+      const av = document.getElementById('accAvatar');
+      if (user.avatar) av.innerHTML = '<img src="' + user.avatar + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+      else av.className += ' am-avatar-fb';
+    })();
+  </script>
+</body>
+</html>
